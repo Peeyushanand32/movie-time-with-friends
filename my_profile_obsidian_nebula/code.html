@@ -1,0 +1,285 @@
+<!DOCTYPE html><html lang="en" class="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#001e2f",
+                    "on-secondary-container": "#b0b2ff",
+                    "outline": "#a68992",
+                    "glass-stroke": "rgba(255, 255, 255, 0.08)",
+                    "on-surface": "#e5e2e0",
+                    "background": "#131312",
+                    "on-tertiary": "#00344d",
+                    "surface": "#131312",
+                    "text-primary": "#E6E6E6",
+                    "on-primary-fixed": "#3e0021",
+                    "surface-tint": "#ffb0cd",
+                    "primary-fixed": "#ffd9e4",
+                    "tertiary-fixed-dim": "#89ceff",
+                    "surface-bright": "#3a3938",
+                    "primary": "#ffb0cd",
+                    "on-error": "#690005",
+                    "on-surface-variant": "#dfbec8",
+                    "surface-container-low": "#1c1c1a",
+                    "surface-dim": "#131312",
+                    "primary-container": "#d12b81",
+                    "on-error-container": "#ffdad6",
+                    "inverse-surface": "#e5e2e0",
+                    "on-background": "#e5e2e0",
+                    "surface-container-high": "#2a2a29",
+                    "tertiary-fixed": "#c9e6ff",
+                    "surface-container-lowest": "#0e0e0d",
+                    "on-primary": "#640039",
+                    "surface-elevated": "#1E1E1E",
+                    "secondary": "#c0c1ff",
+                    "surface-variant": "#353533",
+                    "on-primary-container": "#fff7f7",
+                    "primary-fixed-dim": "#ffb0cd",
+                    "surface-deep": "#090909",
+                    "on-tertiary-container": "#f6faff",
+                    "tertiary-container": "#007aae",
+                    "secondary-container": "#3131c0",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "on-tertiary-fixed-variant": "#004c6e",
+                    "error": "#ffb4ab",
+                    "on-primary-fixed-variant": "#8d0052",
+                    "surface-container-highest": "#353533",
+                    "on-secondary": "#1000a9",
+                    "surface-container": "#20201e",
+                    "on-secondary-fixed": "#07006c",
+                    "inverse-primary": "#b60b6c",
+                    "inverse-on-surface": "#31302f",
+                    "error-container": "#93000a",
+                    "on-secondary-fixed-variant": "#2f2ebe",
+                    "text-muted": "#9CA3AF",
+                    "secondary-fixed": "#e1e0ff",
+                    "outline-variant": "#584048",
+                    "tertiary": "#89ceff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sidebar-width": "280px",
+                    "gutter": "16px",
+                    "unit": "4px",
+                    "margin-desktop": "32px",
+                    "chat-width": "320px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "display-lg": ["Sora"],
+                    "title-md": ["Sora"],
+                    "label-sm": ["JetBrains Mono"],
+                    "headline-lg-mobile": ["Sora"],
+                    "headline-lg": ["Sora"],
+                    "body-lg": ["Inter"],
+                    "label-md": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    }catch(_e){}</script><meta charset="utf-8"></head><body class="font-body-md text-body-md antialiased">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface-dim dark:bg-surface-dim flex justify-between items-center px-margin-desktop h-16 w-full glass-stroke border-b border-glass-stroke backdrop-blur-md">
+<div class="font-display-lg text-display-lg font-bold text-primary tracking-tighter">Obsidian Nebula</div>
+<div class="hidden md:flex items-center gap-8 font-title-md text-title-md">
+<a href="#" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200">Explore</a>
+<a href="#" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200">Community</a>
+<a href="#" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200">Premium</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors duration-200">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors duration-200">settings</button>
+<button class="bg-primary text-on-primary font-bold px-6 py-2 rounded-full active:scale-95 transition-transform">Create Room</button>
+<div class="w-10 h-10 rounded-full bg-surface-variant overflow-hidden border border-glass-stroke">
+<img class="w-full h-full object-cover" data-alt="A cinematic close-up portrait of a tech-savvy user in a neon-lit room. The lighting features magenta and cyan accents, typical of a professional streaming setup. The user wears modern headphones, and the background shows blurred digital interfaces and hardware. The style is crisp, high-definition, and aligned with a midnight studio aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAJEDlGLfun_Qt-h-pMMETs2wI9IbFOHw9NlTS2qhnE5r_9VNPvVFGqdl4mOpaokBt_dSZaEXuyo9qNo_Gsq9kF0XLd2s-b7NGBHuxQjcQs5gwFptI2ilw3C8-PphOPIDWjrCzzoymIxcSjxTt38KQ0DwQuZtTboI-da8fU5Hr9d0oFfYyhFzzXhPz26pcepXNwGuhUK3WKUuHXFUL_NTriOW2K2sWqfeOZYa7pEgT93HNiMabu9buEvu5cQqmTPMqwFDbAXUM51o">
+</div>
+</div>
+</nav>
+<!-- SideNavBar (Desktop) -->
+<aside class="hidden md:flex fixed left-0 top-0 h-full w-sidebar-width bg-surface-container dark:bg-surface-container border-r border-glass-stroke flex-col py-6 gap-2 mt-16">
+<div class="px-6 mb-6">
+<h2 class="font-headline-lg text-headline-lg text-primary">Nebula Lobby</h2>
+<p class="font-label-md text-label-md text-text-muted">1,240 Online Now</p>
+</div>
+<nav class="flex-grow">
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 px-4 py-3 flex items-center gap-3 transition-all" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 px-4 py-3 flex items-center gap-3 transition-all" href="#">
+<span class="material-symbols-outlined">local_fire_department</span>
+<span class="font-label-md text-label-md">Trending</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 px-4 py-3 flex items-center gap-3 transition-all" href="#">
+<span class="material-symbols-outlined">movie</span>
+<span class="font-label-md text-label-md">Watch Party</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 px-4 py-3 flex items-center gap-3 transition-all" href="#">
+<span class="material-symbols-outlined">videogame_asset</span>
+<span class="font-label-md text-label-md">Game Night</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 px-4 py-3 flex items-center gap-3 transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md">Friends</span>
+</a>
+</nav>
+<div class="mt-auto flex flex-col gap-2">
+<button class="bg-secondary-container text-on-secondary-container rounded-xl mx-4 py-3 font-bold mb-4 active:scale-[0.98] transition-transform">Go Live</button>
+<div class="flex flex-col border-t border-glass-stroke pt-4">
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 px-4 py-2 flex items-center gap-3 transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">Support</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 px-4 py-2 flex items-center gap-3 transition-all" href="#">
+<span class="material-symbols-outlined">shield</span>
+<span class="font-label-md text-label-md">Safety</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:pl-sidebar-width pt-16 pb-20 md:pb-8 min-h-screen bg-surface-deep">
+<div class="max-w-6xl mx-auto p-4 md:p-8">
+<!-- User Profile Header -->
+<header class="relative mb-8 rounded-3xl overflow-hidden glass-stroke nebula-glow">
+<div class="h-48 w-full relative">
+
+<div class="absolute inset-0 bg-gradient-to-t from-surface-deep to-transparent"></div>
+</div>
+<div class="relative px-8 pb-8 flex flex-col md:flex-row gap-6 items-center">
+<div class="w-32 h-32 rounded-3xl bg-surface-elevated p-1 glass-stroke relative overflow-hidden">
+<img class="w-full h-full object-cover rounded-2xl" data-alt="A high-quality 3D rendered avatar of a stylish digital persona. The character features sleek, reflective textures on their clothing and vibrant pink accents in their accessories. The lighting is moody and studio-focused, emphasizing the futuristic tech aesthetic of the Obsidian Nebula design system. Deep shadows and sharp highlights create a premium feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqXzSlsB8UYdOm-qKnIkif9GRXhglhOppdD1OgwvvmCK76umnafL32ifkpxi8OL-b4xaDBCqXg5crZcYsvzai3bAVb9_UJhb7WbWHmMK9Shp_eRNBBppeM2uHlXLzvZq1hqatHpHlfLagSSO43YXuNTX2Ijv4Yf0TsIX5XzlXtxfPbtIi4ZU40cQTspaPWjdaVtHAygfg-jzFt2fMc8WrY41e_-RL3FvE7XVWShTP3IQE9VO3uVfxLOK2MOGi6QN5gNCNhnsV3zPo">
+</div>
+<div class="flex-grow">
+<h1 class="font-display-lg text-display-lg text-primary">Nebula_Voyager</h1>
+<p class="font-body-lg text-body-lg text-text-muted">Digital Curator &amp; Night Owl • Member since 2023</p>
+</div>
+<div class="flex gap-3 mb-2">
+<button class="bg-surface-variant text-on-surface font-semibold px-6 py-2 rounded-xl glass-stroke hover:bg-surface-bright transition-colors active:scale-95">Edit Profile</button>
+<button class="bg-primary text-on-primary font-bold px-4 py-2 rounded-xl active:scale-95 transition-transform">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Dashboard Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Created Rooms -->
+<section class="md:col-span-8 space-y-4">
+<div class="flex items-center justify-between px-2">
+<h3 class="font-headline-lg text-headline-lg text-on-surface">My Active Rooms</h3>
+<a class="text-primary font-label-md text-label-md" href="#">View All</a>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<!-- Room Card 1 -->
+<div class="bg-surface-elevated rounded-2xl glass-stroke p-4 group cursor-pointer hover:border-primary transition-all flex-col">
+<div class="aspect-video rounded-xl mb-4 overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A stylized 16:9 thumbnail of a virtual cinema room with deep purple lighting and a giant floating screen. The room features luxurious digital seating and a panoramic view of a star-filled nebula outside a curved window. The aesthetic is professional, futuristic, and high-fidelity, typical of an Obsidian Nebula hangout space." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbipjTAKSdgsy_MdvI4PCBcNaXLDiyPemMxzM1aeWlVQmTcB8urMrkqL6O5lxEd5Rti8dr9fDhAXfowqvKZ13Iw0i2eiSwxrQ9lbGrVF74sIISMnOWq8NcHd2PEOsmwPFz-xjs9YsFKUCBS7uaZQXwXc1ga3qiFUOrWn-6YLttJwY-SapxKr8rXIJDv1RSScVjibqbIMelTeBNKE2gvKBy-krearn4wpYmtnjEKeXYDxuAHGfsI3MKl8Uwfap3n9qckfY-Y1RO15c">
+<div class="absolute top-3 right-3 bg-primary/90 text-on-primary px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest">Live</div>
+</div>
+<h4 class="font-title-md text-title-md text-on-surface">Lo-Fi &amp; Code Retreat</h4>
+<p class="text-text-muted font-label-sm text-label-sm mt-1">12 listeners • 3 speakers</p>
+</div>
+<!-- Room Card 2 -->
+<div class="bg-surface-elevated rounded-2xl glass-stroke p-4 group cursor-pointer hover:border-primary transition-all flex-col">
+<div class="aspect-video rounded-xl mb-4 overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A digital art studio thumbnail showing holographic canvases floating in a dark, minimalist space with pink neon accents. Tools and palettes are arranged in a sleek UI layout within the environment. The atmosphere is quiet, creative, and immersive, emphasizing the professional glassmorphism style of the dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmynsmKDL2DCky13p5V2bmuqzYEPLcLnNk6qhdD7JRvgaZTNMNUT5vn89YHoomyUtS68SH-f_kDQhfIfnOqBAFmQUBfxOVpbybjSL0kWznyaLFCMeXMGrbj3oRix4KMqwGrjEqavXf25Cwj-0tVN-OLYP9ThTYWC8WmY__8aMBtufh9KbkVvy3oiz0B69wbIPLMCOZPBrn0RiwQ_1hxo2qLkjMn7VpzkglpQwwC_8cA21oe6AM5Vi30fkTrvt_HzXaJtyKJSMlSYA">
+</div>
+<h4 class="font-title-md text-title-md text-on-surface">Cyberpunk Art Jam</h4>
+<p class="text-text-muted font-label-sm text-label-sm mt-1">4 participants • Open Collaboration</p>
+</div>
+</div>
+<!-- Favorite Categories -->
+<div class="pt-4 px-2">
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-4">Favorite Categories</h3>
+<div class="flex flex-wrap gap-3">
+<span class="bg-surface-container-high px-4 py-2 rounded-full border border-glass-stroke text-on-surface-variant font-label-md hover:border-primary transition-colors cursor-pointer font-medium">#RetroGaming</span>
+<span class="bg-surface-container-high px-4 py-2 rounded-full border border-glass-stroke text-on-surface-variant font-label-md hover:border-primary transition-colors cursor-pointer font-medium">#Web3Design</span>
+<span class="bg-surface-container-high px-4 py-2 rounded-full border border-glass-stroke text-on-surface-variant font-label-md hover:border-primary transition-colors cursor-pointer font-medium">#AmbientAudio</span>
+<span class="bg-surface-container-high px-4 py-2 rounded-full border border-glass-stroke text-on-surface-variant font-label-md hover:border-primary transition-colors cursor-pointer font-medium">#WatchParty</span>
+</div>
+</div>
+</section>
+<!-- Sidebar Content (Friends & Activity) -->
+<aside class="md:col-span-4 space-y-6">
+<!-- Friends List -->
+<div class="rounded-3xl glass-stroke p-6 bg-surface-bright"><h3 class="font-title-md text-title-md text-on-surface mb-6 flex items-center justify-between">Friends<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-[10px]">24</span></h3><div class="space-y-5"><div class="flex items-center gap-3"><div class="relative"><div class="w-10 h-10 rounded-full bg-surface-variant border border-glass-stroke overflow-hidden"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUt6-XnK4E8DiMGXZYPnrXUgqi3NEhGxR131zpiNSmBy-Ni4FAsX6W577DI47zYuCxsOHVgsVlXasD5EU3_cxrJXKVGE56jwDgugsRe98zSFVwZ_clZ7PfjUIFZINHvM3Q8pVyBhyL3GkdLn0rJF7mETrdhdXCkaUnmTAcIIU5I0mbT1nTMnKT8Kz-jUBA8R9w3KKjGG52Dppb8hOXLUmy9taHQvPU9HimLZLMFHygzVJS4ghZdf6uuPh4LRvJhaX-r5TNHVL2ZLA"></div><div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-surface-deep"></div></div><div class="flex-grow"><div class="font-label-md text-label-md text-on-surface">NeonShadow</div><div class="text-[10px] text-primary">In Room: Midnight Drive</div></div><button class="material-symbols-outlined text-text-muted hover:text-secondary">chat_bubble</button></div><div class="flex items-center gap-3"><div class="relative"><div class="w-10 h-10 rounded-full bg-surface-variant border border-glass-stroke overflow-hidden"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXbleMpDGYHnTGsDZyScbbLJuBNtuq_c6-P6kf5SnC7BAsJNNAGzVm3JlwgMtBfCV41Cb2bL6-1lTpH8bsQou9ZTSyMIWS6ZiuywcmO6-bPBISTWjalyDTETbnTcWW2jqXZVu9Pmln_gCx33C52RMGDBl6VXtZ9Cf3UyttPo3OszH8yo44KzZnt-89ostcGgSA68sxe_CRCVZEJK8JgXoDdl7B2GALdRE_4kfVYosiVh2h3oZyv8rF1rgdiEC81kQgTFh7QttF0cY"></div><div class="absolute bottom-0 right-0 w-3 h-3 bg-surface-variant rounded-full border-2 border-surface-deep"></div></div><div class="flex-grow"><div class="font-label-md text-label-md text-on-surface">ArticFlux</div><div class="text-[10px] text-text-muted">Last seen 12m ago</div></div><button class="material-symbols-outlined text-text-muted hover:text-secondary">chat_bubble</button></div></div><button class="w-full mt-6 py-2 border border-glass-stroke rounded-xl font-label-md text-on-surface-variant hover:bg-surface-variant transition-colors">Add Friends</button></div>
+<!-- Recent Activity -->
+<div class="rounded-3xl glass-stroke p-6 bg-surface-bright">
+<h3 class="font-title-md text-title-md text-on-surface mb-6">Recent Activity</h3>
+<div class="space-y-6 relative before:absolute before:left-5 before:top-2 before:bottom-2 before:w-[1px] before:bg-glass-stroke">
+<!-- Activity 1 -->
+<div class="relative pl-10">
+<div class="absolute left-3.5 top-1.5 w-3 h-3 rounded-full bg-primary border-2 border-surface-deep z-10"></div>
+<p class="text-on-surface font-label-md text-label-md"><strong>NeonShadow</strong> started a stream in <strong>Retro Beats</strong></p>
+<span class="text-[10px] text-text-muted">2 hours ago</span>
+</div>
+<!-- Activity 2 -->
+<div class="relative pl-10">
+<div class="absolute left-3.5 top-1.5 w-3 h-3 rounded-full bg-secondary border-2 border-surface-deep z-10"></div>
+<p class="text-on-surface font-label-md text-label-md"><strong>Nova_Sky</strong> joined your room <strong>Lo-Fi &amp; Code</strong></p>
+<span class="text-[10px] text-text-muted">5 hours ago</span>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface-container-highest/80 dark:bg-surface-container-highest/80 border-t border-glass-stroke backdrop-blur-xl flex justify-around items-center px-4 py-2 pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-sm text-label-sm-mobile">Lobby</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-label-sm text-label-sm-mobile">Social</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">door_open</span>
+<span class="font-label-sm text-label-sm-mobile">My Rooms</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full p-2 h-12 w-12 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+</a>
+</nav>
+<!-- Micro-interaction Script -->
+<script>
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                if(!el.classList.contains('active:scale-95')) {
+                    el.style.transform = 'translateY(-1px)';
+                }
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Simulating some atmospheric glow movement
+        window.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            document.body.style.backgroundImage = `radial-gradient(circle at ${x * 100}% ${y * 100}%, rgba(255, 176, 205, 0.03) 0%, transparent 50%)`;
+        });
+    </script>
+
+</body></html>

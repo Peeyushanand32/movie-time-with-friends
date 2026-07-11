@@ -1,0 +1,393 @@
+<!DOCTYPE html><html lang="en" class="dark" style=""><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#001e2f",
+                    "on-secondary-container": "#b0b2ff",
+                    "outline": "#a68992",
+                    "glass-stroke": "rgba(255, 255, 255, 0.08)",
+                    "on-surface": "#e5e2e0",
+                    "background": "#131312",
+                    "on-tertiary": "#00344d",
+                    "surface": "#131312",
+                    "text-primary": "#E6E6E6",
+                    "on-primary-fixed": "#3e0021",
+                    "surface-tint": "#ffb0cd",
+                    "primary-fixed": "#ffd9e4",
+                    "tertiary-fixed-dim": "#89ceff",
+                    "surface-bright": "#3a3938",
+                    "primary": "#ffb0cd",
+                    "on-error": "#690005",
+                    "on-surface-variant": "#dfbec8",
+                    "surface-container-low": "#1c1c1a",
+                    "surface-dim": "#131312",
+                    "primary-container": "#d12b81",
+                    "on-error-container": "#ffdad6",
+                    "inverse-surface": "#e5e2e0",
+                    "on-background": "#e5e2e0",
+                    "surface-container-high": "#2a2a29",
+                    "tertiary-fixed": "#c9e6ff",
+                    "surface-container-lowest": "#0e0e0d",
+                    "on-primary": "#640039",
+                    "surface-elevated": "#1E1E1E",
+                    "secondary": "#c0c1ff",
+                    "surface-variant": "#353533",
+                    "on-primary-container": "#fff7f7",
+                    "primary-fixed-dim": "#ffb0cd",
+                    "surface-deep": "#090909",
+                    "on-tertiary-container": "#f6faff",
+                    "tertiary-container": "#007aae",
+                    "secondary-container": "#3131c0",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "on-tertiary-fixed-variant": "#004c6e",
+                    "error": "#ffb4ab",
+                    "on-primary-fixed-variant": "#8d0052",
+                    "surface-container-highest": "#353533",
+                    "on-secondary": "#1000a9",
+                    "surface-container": "#20201e",
+                    "on-secondary-fixed": "#07006c",
+                    "inverse-primary": "#b60b6c",
+                    "inverse-on-surface": "#31302f",
+                    "error-container": "#93000a",
+                    "on-secondary-fixed-variant": "#2f2ebe",
+                    "text-muted": "#9CA3AF",
+                    "secondary-fixed": "#e1e0ff",
+                    "outline-variant": "#584048",
+                    "tertiary": "#89ceff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sidebar-width": "280px",
+                    "gutter": "16px",
+                    "unit": "4px",
+                    "margin-desktop": "32px",
+                    "chat-width": "320px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "display-lg": ["Sora"],
+                    "title-md": ["Sora"],
+                    "label-sm": ["JetBrains Mono"],
+                    "headline-lg-mobile": ["Sora"],
+                    "headline-lg": ["Sora"],
+                    "body-lg": ["Inter"],
+                    "label-md": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    }catch(_e){}</script><meta charset="utf-8"></head><body class="h-screen flex flex-col">
+<!-- Ambient Glows -->
+<div class="ambient-orb bg-primary left-[-10%] top-[-10%]"></div>
+<div class="ambient-orb bg-secondary right-[-10%] bottom-[-10%]" style="animation-delay: -5s;"></div>
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface-dim/80 backdrop-blur-md border-b border-glass-stroke h-16 flex justify-between items-center px-margin-desktop shadow-none">
+<div class="flex items-center gap-8">
+<h1 class="font-display-lg text-headline-lg font-bold text-primary tracking-tighter">Obsidian Nebula</h1>
+<nav class="hidden md:flex gap-6 items-center">
+<a href="#" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-title-md text-label-md">Explore</a>
+<a href="#" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-title-md text-label-md">Community</a>
+<a href="#" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-title-md text-label-md">Premium</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-4 py-2 bg-surface-container rounded-full border border-glass-stroke">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1">group</span>
+<span class="font-label-sm text-on-surface">1,240 Online</span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all active:scale-95">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all active:scale-95">settings</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-primary/30">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a young creative professional with stylized purple backlighting, wearing a sleek black turtleneck against a deep charcoal studio background. The aesthetic is high-end and tech-focused, matching the Obsidian Nebula midnight studio theme with crisp sharp focus and cinematic depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-hP_w7MokkTtZNoylSNihD9tiZIJFgpo0WmAiIE0WXGMrZBg06mflC1n9eFcOOGc2h3IUZz-AfBeKwxCXvLLFgR-1AoF96uJgBmd4HowfBbCClZMlijohHYVL0Vc3PlcuUBlQ5r83kG4etIck9ES964okiOzPY_9dGvND9i9NiaIZFfykwvaRyz3H2uWiwI5dmguGGcYlreUJFx47RONMhFLpYRkQbkuUOH8Ed2u1Zs6nJU2xiSPsLb1OWI4gzNcAskt-uWY0sSs">
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 mt-16 flex overflow-hidden">
+<!-- Left Side Navigation (Room Context) -->
+<aside class="hidden lg:flex flex-col w-sidebar-width bg-surface-container border-r border-glass-stroke py-6 gap-2">
+<div class="px-6 mb-4">
+<h2 class="font-headline-lg text-headline-lg text-primary">Nebula Lobby</h2>
+<p class="text-text-muted font-label-md">Cyberpunk Watch Party</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="bg-secondary-container text-on-secondary-container rounded-xl mx-2 px-4 py-3 flex items-center gap-3 transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md">Home</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 px-4 py-3 flex items-center gap-3 transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">local_fire_department</span>
+<span class="font-label-md">Trending</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 px-4 py-3 flex items-center gap-3 transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">movie</span>
+<span class="font-label-md">Watch Party</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 px-4 py-3 flex items-center gap-3 transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">videogame_asset</span>
+<span class="font-label-md">Game Night</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 px-4 py-3 flex items-center gap-3 transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md">Friends</span>
+</a>
+</nav>
+<div class="mt-auto px-4">
+<button class="w-full py-4 bg-primary text-on-primary font-bold rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">podcasts</span>
+                    Go Live
+                </button>
+</div>
+</aside>
+<!-- Central Theater Area -->
+<section class="flex-1 flex flex-col p-gutter relative min-w-0">
+<!-- User Avatars Top Bar -->
+<div class="flex items-center gap-3 mb-4 overflow-x-auto pb-2 no-scrollbar">
+<div class="flex -space-x-3">
+<!-- Host -->
+<div class="relative group">
+<div class="h-12 w-12 rounded-full border-2 border-primary overflow-hidden neon-glow cursor-pointer transition-transform hover:scale-110">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of a digital artist with vibrant neon pink lighting on one side of their face and cool blue on the other, reflecting a futuristic Obsidian Nebula aesthetic. The background is a soft-focus digital workspace with glowing monitors and tech equipment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFwyNQlnxKAGb6c4LhZlQGO1p9rowO6kkSIhnBqqNd8OiJXN08BhzxI91DqldJt-QJ5vaxYtXHeQwhEW9Da4oMjCL0eXTr_MZjsgQjZ6NI-7rLVI9xOz9S9SEAarNtFA4uISub1qOBt0zRROJy6goQpcmZB0hhUTU7aAYrRUMWosUTrCVvBaEvrfRfCw0-9h67RjXNuNMbjdv8KrMZwWyfXuqbMmupFUkTOOVwBxf3ur9oxVK0fwKZ3yCAWvH5StmApkeYtQHGnHI">
+</div>
+<div class="absolute bottom-0 right-0 h-3 w-3 bg-green-500 border-2 border-surface-deep rounded-full"></div>
+</div>
+<!-- Other Users -->
+<div class="h-12 w-12 rounded-full border-2 border-glass-stroke overflow-hidden cursor-pointer transition-transform hover:scale-110">
+<img class="w-full h-full object-cover" data-alt="Portrait of a young gamer wearing high-end white headphones, illuminated by the soft glow of a computer screen in a dark room. The mood is focused and immersive, using a cinematic lighting style with deep shadows and soft highlights consistent with the Obsidian Nebula theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIgzHlWOlCnL5L2wDfnM1ITcENEYusuxUNny12zmXo82yUuAJN5cXfxVihFNa5WXBTDkLkxRfkrvxdJ9sy8d94OQPInXf3qppHChjI8A0DuEwxBXg_-b5dDlyYzaZ0N_y5yAsGpgFdfHQkWeoItcCo8gHPaXO2BxjrC54YtbtYYgdhk_h3ow55komGN_ZIf7VjCQU8bt9v4_IlreX2Ve0_pVlsv51XD5cnFiYFr6xWbEbF9_zQW6BNWrYmgU_ahmCQyijadzD7NXE">
+</div>
+<div class="h-12 w-12 rounded-full border-2 border-glass-stroke overflow-hidden cursor-pointer transition-transform hover:scale-110">
+<img class="w-full h-full object-cover" data-alt="A stylish woman with short electric blue hair and geometric glasses, looking directly into the camera with a confident expression. Lighting is dramatic and high-contrast, featuring deep purples and vibrant pinks that match the Obsidian Nebula's modern glassmorphism design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfljgZ2mhvuOeaO7C23Hg8yFZ0ar_JxL-0l8xq0L_vRvaVGK3PhL01H6zyb00tEtsN2In77Qfh7HBRNdYxfPVdXgaLyKYLO5olo1Q--0h0xZLe0yvCXUZi335gQwxmcRBnBVcCw2vDki-CTrgLy_hlP5I2yI185Ik5SKvIYQilrxOuYbvlcSPpDjI3iYxTOZx7JYvSIyzCEDlo4vgN8Vij2CvVa25Y3ceja2ezefsBpMT84uptRb_pzJUgaW0i3bGFylO4lTH4yoA">
+</div>
+<div class="h-12 w-12 rounded-full border-2 border-glass-stroke overflow-hidden cursor-pointer transition-transform hover:scale-110">
+<img class="w-full h-full object-cover" data-alt="Young man in a tech-inspired urban environment at night, lit by neon signs. The image quality is crisp with a shallow depth of field, highlighting the subject against a blurred background of city lights in shades of magenta and indigo, fitting the studio vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBm3FHd90wOmqmbKS6SebvwmM6vHN_m_5I2ZrQ0n2vmw1JII0nP4w5TVCZGTWFTZKNSPwKGDeR8FrlNotQaQS-qTFGXs_8QgdexmEXyw4sJxJ0KXsx0hydwRrY7S7b7YoJHtt3P1E-WQlb9x3MtpTyhLwMuSb1nP-pHV9wfaebiqkO6yIXsFqGrW9ti2a0XFmbu436jbJgpNYLvfXUs3YCNcrGgVbs-I3hVyPq5OpU3hHsXZ1uHkMWr42DGN_2N7IKkL8BamSLRolk">
+</div>
+</div>
+<button class="h-10 w-10 flex items-center justify-center rounded-full bg-surface-container border border-glass-stroke text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+<!-- Video Player Container -->
+<div class="flex items-center gap-4 mb-4 overflow-x-auto pb-2 no-scrollbar">
+  <span class="text-on-surface-variant font-label-sm whitespace-nowrap">Sources:</span>
+  <div class="flex gap-2">
+    <button class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high border border-glass-stroke hover:border-primary/50 hover:bg-surface-variant transition-all active:scale-95 group">
+      <span class="material-symbols-outlined text-error !text-lg">play_circle</span>
+      <span class="font-label-sm text-on-surface">YouTube</span>
+    </button>
+    <button class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high border border-glass-stroke hover:border-primary/50 hover:bg-surface-variant transition-all active:scale-95 group">
+      <span class="material-symbols-outlined text-error !text-lg">movie</span>
+      <span class="font-label-sm text-on-surface">Netflix</span>
+    </button>
+    <button class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high border border-glass-stroke hover:border-primary/50 hover:bg-surface-variant transition-all active:scale-95 group">
+      <span class="material-symbols-outlined text-tertiary !text-lg">shopping_bag</span>
+      <span class="font-label-sm text-on-surface">Prime</span>
+    </button>
+    <button class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high border border-glass-stroke hover:border-primary/50 hover:bg-surface-variant transition-all active:scale-95 group">
+      <span class="material-symbols-outlined text-secondary !text-lg">play_arrow</span>
+      <span class="font-label-sm text-on-surface">MX Player</span>
+    </button>
+  </div>
+</div><div class="flex-1 relative rounded-3xl overflow-hidden bg-black border border-glass-stroke group">
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-full h-full bg-cover bg-center opacity-60" data-alt="A breathtaking cinematic wide shot of a futuristic cyberpunk city at night under a persistent rain, with massive glowing neon advertisements in pink and blue. Hovering vehicles glide between towering skyscrapers made of dark glass. The scene is incredibly detailed, showing wet pavement reflections and a dense urban atmosphere in the Obsidian Nebula style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB9gkpu5-aqD6ZJS6bB8037Q_Z6MKNFPupdyqk2ygAWuaTdzTNnksCEbLRcXnoJAzE-j1L9BT4qwT7yfLrdHRcV-Rb_5Omc6zzduqLhCkRzJtV8XQqOdlufuxiDJfcXlmjojSCOb-pSb1k07qEMz8k19wx3yLsUV9wonukMzHw_l7Tft7meKUblx2JHK2DgV4isW4XzmP85NjVfSqQDgC1ih03kYmY--bBAbVyguYsHSC4UQwv0OwB--63zewVByiUqNDq5e5xNuX4')"></div>
+<button class="z-10 h-20 w-20 rounded-full bg-primary/90 text-on-primary flex items-center justify-center shadow-2xl transition-transform hover:scale-110 active:scale-95">
+<span class="material-symbols-outlined !text-4xl" style="font-variation-settings: 'FILL' 1">play_arrow</span>
+</button>
+</div>
+<!-- Video Controls Overlay -->
+<div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6 translate-y-4 group-hover:translate-y-0 transition-transform items-stretch">
+<div class="w-full h-1 bg-surface-variant rounded-full mb-6 cursor-pointer relative">
+<div class="absolute h-full w-1/3 bg-primary rounded-full neon-glow"></div>
+<div class="absolute h-3 w-3 bg-white rounded-full -top-1 left-1/3 shadow-md"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-white hover:text-primary transition-colors">pause</button>
+<button class="material-symbols-outlined text-white hover:text-primary transition-colors">skip_next</button>
+<div class="flex items-center gap-2">
+<button class="material-symbols-outlined text-white hover:text-primary transition-colors">volume_up</button>
+<div class="w-20 h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="w-3/4 h-full bg-white"></div>
+</div>
+</div>
+<span class="font-label-sm text-white/80">12:45 / 45:00</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-white hover:text-primary transition-colors">closed_caption</button>
+<button class="material-symbols-outlined text-white hover:text-primary transition-colors">settings</button>
+<button class="material-symbols-outlined text-white hover:text-primary transition-colors">fullscreen</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Interaction Toolbar (Bottom) -->
+<div class="flex justify-center mt-6">
+<div class="glass-panel px-6 py-3 rounded-2xl flex items-center gap-6 shadow-2xl">
+<button class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-all">
+<div class="h-10 w-10 rounded-full flex items-center justify-center active:scale-90 duration-150 bg-surface-container-high">
+<span class="material-symbols-outlined">mic</span>
+</div>
+<span class="font-label-sm">Mic</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-all">
+<div class="h-10 w-10 rounded-full flex items-center justify-center active:scale-90 duration-150 bg-surface-container-high">
+<span class="material-symbols-outlined">videocam</span>
+</div>
+<span class="font-label-sm">Cam</span>
+</button>
+<div class="w-px h-10 bg-glass-stroke"></div>
+<button class="flex flex-col items-center gap-1 text-primary hover:text-primary-container transition-all">
+<div class="h-12 w-12 rounded-full flex items-center justify-center bg-primary text-on-primary shadow-lg shadow-primary/20 active:scale-90 duration-150">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">screen_share</span>
+</div>
+<span class="font-label-sm font-bold">Share</span>
+</button>
+<div class="w-px h-10 bg-glass-stroke"></div>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-all">
+<div class="h-10 w-10 rounded-full flex items-center justify-center active:scale-90 duration-150 bg-surface-container-high">
+<span class="material-symbols-outlined">apps</span>
+</div>
+<span class="font-label-sm">Apps</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-error hover:text-error-container transition-all">
+<div class="h-10 w-10 rounded-full flex items-center justify-center bg-error-container/20 border border-error/30 active:scale-90 duration-150">
+<span class="material-symbols-outlined">call_end</span>
+</div>
+<span class="font-label-sm">Leave</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Right Side Chat Bar -->
+<aside class="hidden xl:flex flex-col w-chat-width bg-surface-container border-l border-glass-stroke">
+<div class="p-6 border-b border-glass-stroke flex items-center justify-between bg-surface-container">
+<h3 class="font-title-md text-primary">Live Chat</h3>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">close</span>
+</div>
+<div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+<!-- Message -->
+<div class="flex gap-3">
+<div class="h-8 w-8 rounded-full overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Portrait of a young tech-enthusiast with dyed platinum hair and oversized studio headphones. The lighting is low-key with subtle pink rim lighting, creating a high-contrast look that blends perfectly with the dark UI theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEgsg3mrrKBJQxqAgno4sKbNDhVtySBI8RXHq2AQoDCcf--suf8MBEntxBS3PMUtR82YConHk6Xz0n21U2T5F824kF4SDQYeozaF5jGIxmWt1A6Ca3qPKbiieSZsNF5h0ygtoiTkzbYLSLApmatUNylf4sn3_SR1ngOenxYTuEp-Wq-GFXsqlGRJdzuj3ivg0F0RE4Xnd0-bHGXjebPXJO0gwt6AGC9MgJPXJMczgnvOuVMGy61wtA8zy92iDPu3G0oeW0SkujsFY">
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="font-label-sm font-bold text-secondary">Luna_Eclipse</span>
+<span class="text-[10px] text-text-muted">8:24 PM</span>
+</div>
+<div class="p-3 bg-surface-variant rounded-2xl rounded-tl-none text-on-surface font-body-md text-sm">
+                            This scene is absolutely insane! The lighting work here... 😍
+                        </div>
+</div>
+</div>
+<!-- Own Message -->
+<div class="flex flex-col items-end gap-1">
+<div class="flex items-center gap-2">
+<span class="text-[10px] text-text-muted">8:25 PM</span>
+<span class="font-label-sm font-bold text-primary">Me</span>
+</div>
+<div class="p-3 bg-secondary-container text-on-secondary-container rounded-2xl rounded-tr-none text-sm font-body-md shadow-lg shadow-secondary/10">
+                        Right?? Cyberpunk 2077 visuals still hold up so well in 2024.
+                    </div>
+</div>
+<div class="flex gap-3">
+<div class="h-8 w-8 rounded-full overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Profile photo of a man wearing a dark hoodie, his face partially shadowed, lit by the electric glow of a smartphone screen. The image features deep blacks and vibrant neon accents, consistent with a high-end digital lounge aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0llP-8xqEKrgByRLXjLPLLz7hA4-cfzZJTZdk1stzuD2wmKon3DGYq4vK_cTnZM_lvVmaBzhYMnZOZKjJBmkZlXFnJKsPTgiGhjRZq4bX6aHRQsuyLhx4TuCUA97gKhsnczNx2YlZsfGjnJvMqUu6x3VwMffbFSUNlwJxA7zvW71MRjaZUiZTCkWF5CmRP_WAmWfp51FPUS7MVjfBEght5cx9Gbn4Ym0rSRBe3yqVFU7F5urzxTk9aOIzq0Wtzfz-ZjDoDLNu-kg">
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="font-label-sm font-bold text-tertiary">Pixel_Runner</span>
+<span class="text-[10px] text-text-muted">8:26 PM</span>
+</div>
+<div class="p-3 bg-surface-variant rounded-2xl rounded-tl-none text-on-surface font-body-md text-sm">
+                            Anyone want to switch to the Night City exploration next?
+                        </div>
+</div>
+</div>
+</div>
+<!-- Chat Input -->
+<div class="p-4 border-t border-glass-stroke bg-surface-container">
+<div class="relative flex items-center">
+<input class="w-full bg-surface-deep border border-glass-stroke rounded-2xl py-3 pl-4 pr-12 focus:outline-none focus:border-secondary transition-all font-body-md text-sm" placeholder="Type a message..." type="text">
+<button class="absolute right-2 h-8 w-8 bg-secondary text-on-secondary rounded-xl flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined !text-xl">send</span>
+</button>
+</div>
+<div class="flex gap-4 mt-2 px-2">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary !text-lg">sentiment_satisfied</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary !text-lg">gif_box</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary !text-lg">image</button>
+</div>
+</div>
+</aside>
+</main>
+<!-- Mobile Bottom Navigation (Visible only on mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full glass-panel flex justify-around items-center px-4 py-2 pb-safe z-50">
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-sm text-[10px]">Lobby</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full p-2 h-12 w-12 active:scale-90 duration-150">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">chat_bubble</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined">door_open</span>
+<span class="font-label-sm text-[10px]">Rooms</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-[10px]">Profile</span>
+</button>
+</nav>
+<script>
+        // Micro-interactions and atmospheric effects
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatInput = document.querySelector('input');
+            chatInput.addEventListener('focus', () => {
+                chatInput.parentElement.classList.add('neon-glow');
+            });
+            chatInput.addEventListener('blur', () => {
+                chatInput.parentElement.classList.remove('neon-glow');
+            });
+
+            // Simulate message sending
+            const sendBtn = document.querySelector('button .material-symbols-outlined:contains("send")')?.parentElement;
+            if (sendBtn) {
+                sendBtn.addEventListener('click', () => {
+                    if (chatInput.value.trim()) {
+                        chatInput.value = '';
+                    }
+                });
+            }
+
+            // Keyboard shortcut for Cam/Mic
+            window.addEventListener('keydown', (e) => {
+                if (e.code === 'KeyM') {
+                    // Toggle Mic logic here
+                }
+                if (e.code === 'KeyV') {
+                    // Toggle Cam logic here
+                }
+            });
+        });
+    </script>
+
+</body></html>

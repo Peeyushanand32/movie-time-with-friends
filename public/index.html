@@ -1,0 +1,302 @@
+<!DOCTYPE html><html lang="en" class="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Obsidian Nebula - Share Experiences Together</title><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><link rel="stylesheet" href="/css/custom.css"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script src="/js/auth.js"></script><script id="tailwind-config">try{
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "on-tertiary-fixed": "#001e2f",
+                  "on-secondary-container": "#b0b2ff",
+                  "outline": "#a68992",
+                  "glass-stroke": "rgba(255, 255, 255, 0.08)",
+                  "on-surface": "#e5e2e0",
+                  "background": "#131312",
+                  "on-tertiary": "#00344d",
+                  "surface": "#131312",
+                  "text-primary": "#E6E6E6",
+                  "on-primary-fixed": "#3e0021",
+                  "surface-tint": "#ffb0cd",
+                  "primary-fixed": "#ffd9e4",
+                  "tertiary-fixed-dim": "#89ceff",
+                  "surface-bright": "#3a3938",
+                  "primary": "#ffb0cd",
+                  "on-error": "#690005",
+                  "on-surface-variant": "#dfbec8",
+                  "surface-container-low": "#1c1c1a",
+                  "surface-dim": "#131312",
+                  "primary-container": "#d12b81",
+                  "on-error-container": "#ffdad6",
+                  "inverse-surface": "#e5e2e0",
+                  "on-background": "#e5e2e0",
+                  "surface-container-high": "#2a2a29",
+                  "tertiary-fixed": "#c9e6ff",
+                  "surface-container-lowest": "#0e0e0d",
+                  "on-primary": "#640039",
+                  "surface-elevated": "#1E1E1E",
+                  "secondary": "#c0c1ff",
+                  "surface-variant": "#353533",
+                  "on-primary-container": "#fff7f7",
+                  "primary-fixed-dim": "#ffb0cd",
+                  "surface-deep": "#090909",
+                  "on-tertiary-container": "#f6faff",
+                  "tertiary-container": "#007aae",
+                  "secondary-container": "#3131c0",
+                  "secondary-fixed-dim": "#c0c1ff",
+                  "on-tertiary-fixed-variant": "#004c6e",
+                  "error": "#ffb4ab",
+                  "on-primary-fixed-variant": "#8d0052",
+                  "surface-container-highest": "#353533",
+                  "on-secondary": "#1000a9",
+                  "surface-container": "#20201e",
+                  "on-secondary-fixed": "#07006c",
+                  "inverse-primary": "#b60b6c",
+                  "inverse-on-surface": "#31302f",
+                  "error-container": "#93000a",
+                  "on-secondary-fixed-variant": "#2f2ebe",
+                  "text-muted": "#9CA3AF",
+                  "secondary-fixed": "#e1e0ff",
+                  "outline-variant": "#584048",
+                  "tertiary": "#89ceff"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "sidebar-width": "280px",
+                  "gutter": "16px",
+                  "unit": "4px",
+                  "margin-desktop": "32px",
+                  "chat-width": "320px",
+                  "margin-mobile": "16px"
+          },
+          "fontFamily": {
+                  "body-md": ["Inter"],
+                  "display-lg": ["Sora"],
+                  "title-md": ["Sora"],
+                  "label-sm": ["JetBrains Mono"],
+                  "headline-lg-mobile": ["Sora"],
+                  "headline-lg": ["Sora"],
+                  "body-lg": ["Inter"],
+                  "label-md": ["JetBrains Mono"]
+          },
+          "fontSize": {
+                  "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                  "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                  "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                  "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                  "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                  "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                  "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                  "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+          }
+        },
+      },
+    }
+  }catch(_e){}</script></head><body class="bg-surface-deep text-on-surface">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 bg-surface-dim/80 nav-blur border-b border-glass-stroke h-16 flex justify-between items-center px-margin-mobile md:px-margin-desktop">
+<div class="flex items-center gap-4 cursor-pointer" onclick="location.href='/'">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary animate-pulse">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<span class="font-display-lg text-headline-lg-mobile md:text-title-md font-bold tracking-tighter text-primary-container">Obsidian Nebula</span>
+</div>
+<!-- Desktop Nav Links -->
+<div class="hidden md:flex items-center gap-8">
+<a href="/lobby.html" class="text-primary font-bold border-b-2 border-primary pb-1 font-title-md text-label-md hover:scale-105">Explore</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-title-md text-label-md hover:scale-105" href="/lobby.html">Community</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-title-md text-label-md hover:scale-105" href="/lobby.html">Rooms</a>
+</div>
+<div class="flex items-center gap-4">
+<button onclick="location.href='/lobby.html?create=true'" class="hidden md:flex bg-primary-container text-on-primary-container font-bold px-4 py-2 rounded-lg active:scale-95 transition-transform font-label-md hover:brightness-110">
+        Create Room
+      </button>
+<div id="navbar-user-controls" class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-glass-stroke cursor-pointer" onclick="location.href='/profile.html'">
+<img id="nav-avatar" class="w-full h-full object-cover" src="">
+</div>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative pt-32 pb-20 px-margin-mobile md:px-margin-desktop overflow-hidden">
+<div class="absolute inset-0 hero-glow -z-10"></div>
+<div class="max-w-7xl mx-auto flex flex-col items-center text-center">
+<div class="animate-float mb-8">
+<div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-surface-container flex items-center justify-center border border-primary/20 neon-border">
+<span class="material-symbols-outlined text-[48px] md:text-[64px] text-primary" style="font-variation-settings: 'FILL' 1;">public</span>
+</div>
+</div>
+<h1 class="font-display-lg text-display-lg md:text-[64px] mb-6 leading-tight max-w-4xl">
+        Hang out together, <span class="text-primary">anywhere.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-2xl mx-auto">
+        The immersive platform for friends and colleagues to share experiences through high-fidelity video, seamless gaming, and real-time interaction.
+      </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button onclick="location.href='/lobby.html?create=true'" class="bg-primary-container text-on-primary-container font-bold text-title-md px-8 py-4 rounded-xl shadow-lg hover:brightness-110 active:scale-95 transition-all">
+          Create a Room
+        </button>
+<button onclick="location.href='/lobby.html'" class="glass-card text-on-surface font-bold text-title-md px-8 py-4 rounded-xl active:scale-95 transition-all">
+          Explore lobby
+        </button>
+</div>
+<!-- Device Badges -->
+<div class="mt-12 flex gap-6 opacity-60 grayscale hover:grayscale-0 transition-all">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined">phone_iphone</span>
+<span class="font-label-sm text-label-sm">iOS</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined">android</span>
+<span class="font-label-sm text-label-sm">Android</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined">laptop_mac</span>
+<span class="font-label-sm text-label-sm">Web</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Features Grid -->
+<section class="py-20 px-margin-mobile md:px-margin-desktop bg-surface-deep">
+<div class="max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Feature 1: Watch Parties -->
+<div class="glass-card md:col-span-2 rounded-2xl p-8 relative overflow-hidden h-80 flex flex-col justify-end">
+<div class="absolute inset-0 -z-10">
+<img class="w-full h-full object-cover opacity-40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYZMoeJU-WNifurRmpJX9nKmsnEmV-W2dmjudC9JL6O_wNefkNHloU849JYrl2KRLniHh9Nz3GGxRX-Dm-JpE4r9K6wq-LhzzY6yN6-VotLXTCIlhuPHC2aeLPqDkfqctNnRvpKfRwOejZatkqTpj79z_tSu0x6e0RPeZ1h1nlfRUoHhnXbGtrs9l_LygxkMyZ5uWfV1PgeXSCmLfA-ZqnjALqlAbBx4-H0oiNZKOpC2CxTrTdycGB9iZsBZt65S5wZflxX991bSE">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-deep via-transparent to-transparent"></div>
+</div>
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary p-2 bg-primary/10 rounded-lg">movie</span>
+<h3 class="font-headline-lg text-headline-lg">Watch Parties</h3>
+</div>
+<p class="text-on-surface-variant font-body-md max-w-md">Stream movies, shows, or YouTube videos in perfect sync with your friends. High-quality audio and real-time chat included.</p>
+</div>
+<!-- Feature 2: Screen Sharing -->
+<div class="glass-card rounded-2xl p-8 flex flex-col justify-between group">
+<div class="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center text-secondary mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">screen_share</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md mb-2">Instant Sharing</h3>
+<p class="text-on-surface-variant font-body-md">Share your window or entire desktop with ultra-low latency. Perfect for remote collaboration or showcasing your work.</p>
+</div>
+</div>
+<!-- Feature 3: Game Night -->
+<div class="glass-card rounded-2xl p-8 flex flex-col justify-between group">
+<div class="w-12 h-12 bg-tertiary/10 rounded-xl flex items-center justify-center text-tertiary mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">videogame_asset</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md mb-2">Game Night</h3>
+<p class="text-on-surface-variant font-body-md">Built-in board games and party games, or just play your favorite titles while everyone watches the action.</p>
+</div>
+</div>
+<!-- Feature 4: High Fidelity -->
+<div class="glass-card md:col-span-2 rounded-2xl p-8 flex flex-col md:flex-row items-center gap-8">
+<div class="flex-1">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary p-2 bg-primary/10 rounded-lg">spatial_audio</span>
+<h3 class="font-headline-lg text-headline-lg">Pro Experience</h3>
+</div>
+<p class="text-on-surface-variant font-body-md">Enjoy 4K streaming capabilities, spatial audio, and advanced moderation tools to keep your room safe and private.</p>
+</div>
+<div class="flex-1 h-40 w-full rounded-xl bg-surface-container-highest flex items-center justify-center border border-glass-stroke overflow-hidden">
+<div class="w-3/4 h-1 bg-primary/20 relative rounded-full">
+<div class="absolute left-0 top-0 h-full w-2/3 bg-primary neon-border"></div>
+<div class="absolute left-2/3 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-primary-container border-2 border-white"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="py-20 px-margin-mobile md:px-margin-desktop bg-surface-container">
+<div class="max-w-4xl mx-auto glass-card rounded-3xl p-12 text-center border-primary/20">
+<h2 class="font-headline-lg text-headline-lg md:text-display-lg mb-6">Ready to join the Nebula?</h2>
+<p class="text-on-surface-variant font-body-lg mb-10">Start your own room in seconds. No installation required.</p>
+<div class="flex flex-col sm:flex-row justify-center gap-6">
+<button onclick="location.href='/lobby.html?create=true'" class="bg-primary-container text-on-primary-container font-bold text-title-md px-10 py-5 rounded-2xl shadow-xl hover:brightness-110 active:scale-95 transition-all">
+          Get Started for Free
+        </button>
+<button onclick="location.href='/lobby.html'" class="bg-secondary-container text-on-secondary-container font-bold text-title-md px-10 py-5 rounded-2xl active:scale-95 transition-all">
+          Join a Party
+        </button>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="py-12 px-margin-mobile md:px-margin-desktop border-t border-glass-stroke">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex flex-col items-center md:items-start gap-4">
+<div class="flex items-center gap-3">
+<div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<span class="font-display-lg text-title-md font-bold tracking-tighter text-primary-container">Obsidian Nebula</span>
+</div>
+<p class="text-on-surface-variant font-label-sm">© 2026 Obsidian Nebula. All rights reserved.</p>
+</div>
+<div class="flex gap-8">
+<div class="flex flex-col gap-2">
+<span class="font-bold text-label-md">Platform</span>
+<a class="text-on-surface-variant hover:text-white transition-colors font-label-sm" href="/lobby.html">Explore Lobby</a>
+<a class="text-on-surface-variant hover:text-white transition-colors font-label-sm" href="/lobby.html">Rooms</a>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-bold text-label-md">Support</span>
+<a class="text-on-surface-variant hover:text-white transition-colors font-label-sm" href="#">Help Center</a>
+<a class="text-on-surface-variant hover:text-white transition-colors font-label-sm" href="#">Safety</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- Bottom Nav Bar (Mobile) -->
+<div class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 pb-safe bg-surface-container-highest/80 backdrop-blur-xl border-t border-glass-stroke z-50">
+<div onclick="location.href='/lobby.html'" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary p-2 active:scale-90 duration-150 cursor-pointer">
+<span class="material-symbols-outlined">grid_view</span>
+</div>
+<div onclick="location.href='/lobby.html'" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-90 duration-150 cursor-pointer">
+<span class="material-symbols-outlined">door_open</span>
+</div>
+<div onclick="location.href='/profile.html'" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-90 duration-150 cursor-pointer">
+<span class="material-symbols-outlined">person</span>
+</div>
+</div>
+<script>
+    // Micro-interactions and subtle glow tracking
+    document.addEventListener('mousemove', (e) => {
+      const hero = document.querySelector('.hero-glow');
+      if (hero) {
+        const x = e.clientX / window.innerWidth * 100;
+        const y = e.clientY / window.innerHeight * 100;
+        hero.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(209, 43, 129, 0.1) 0%, transparent 60%)`;
+      }
+    });
+
+    // Intersection observer for fade-in animations
+    const observerOptions = {
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-10');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.glass-card').forEach(card => {
+      card.classList.add('opacity-0', 'translate-y-10', 'transition-all', 'duration-700');
+      observer.observe(card);
+    });
+
+  </script>
+</body></html>
