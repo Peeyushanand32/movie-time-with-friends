@@ -9,6 +9,26 @@ import { google } from 'googleapis';
 import { db } from './database.js';
 import crypto from 'crypto';
 
+// Simple .env file loader for local development
+if (fs.existsSync('.env')) {
+  try {
+    const envContent = fs.readFileSync('.env', 'utf8');
+    envContent.split(/\r?\n/).forEach(line => {
+      // Ignore comments and empty lines
+      if (line.trim().startsWith('#') || !line.trim()) return;
+      const parts = line.split('=');
+      if (parts.length >= 2) {
+        const key = parts[0].trim();
+        const value = parts.slice(1).join('=').trim().replace(/^['"]|['"]$/g, '');
+        if (key && !process.env[key]) {
+          process.env[key] = value;
+        }
+      }
+    });
+  } catch (err) {
+    console.error("Error parsing local .env file:", err);
+  }
+}
 
 const app = express();
 const httpServer = createServer(app);
