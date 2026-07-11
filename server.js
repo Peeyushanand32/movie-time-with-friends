@@ -202,12 +202,17 @@ const DEFAULT_NAMES = ["StellarGamer", "CyberWanderer", "NeonSpectator", "LofiCo
 
 // Helper to verify if user has active paid subscription
 function isSubscriptionActive(user) {
-  return true;
+  if (!user) return false;
+  if (user.tier === 'free') return false;
+  if (!user.subscriptionExpiresAt) return false;
+  return new Date(user.subscriptionExpiresAt) > new Date();
 }
 
 // Helper to check if free user is blocked (exceeded 1-hour trial limit)
 function isUserBlocked(user) {
-  return false;
+  if (!user) return true;
+  if (isSubscriptionActive(user)) return false;
+  return (user.accumulatedTime || 0) >= 3600;
 }
 
 // API Endpoint to check session / initialize user
@@ -220,14 +225,10 @@ app.get('/api/user/session', (req, res) => {
     user = db.saveUser(userId, {
       name: randomName,
       avatarUrl: randomAvatar,
-      tier: 'ultimate',
+      tier: 'free',
       accumulatedTime: 0,
       subscriptionExpiresAt: null,
       createdAt: new Date().toISOString()
-    });
-  } else if (user.tier !== 'ultimate') {
-    user = db.saveUser(userId, {
-      tier: 'ultimate'
     });
   }
   res.json(user);
