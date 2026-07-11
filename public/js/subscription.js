@@ -4,12 +4,12 @@ let activeTier = null; // premium or ultimate
 
 const prices = {
   premium: {
-    '1d': '₹1',
-    '15d': '₹1',
-    '1m': '₹1',
-    '3m': '₹1',
-    '6m': '₹1',
-    '12m': '₹1'
+    '1d': '₹25',
+    '15d': '₹60',
+    '1m': '₹120',
+    '3m': '₹300',
+    '6m': '₹540',
+    '12m': '₹1000'
   },
   ultimate: {
     '1d': '₹1',
