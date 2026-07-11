@@ -309,7 +309,7 @@ app.post('/api/user/subscription', (req, res) => {
 });
 
 // Razorpay Payments: Create Order
-app.post('/api/payment/create-order', (req, res) => {
+app.post('/api/payment/create-order', async (req, res) => {
   const userId = req.headers['x-user-id'];
   const { tier, duration } = req.body;
   if (!userId) {
@@ -350,38 +350,19 @@ app.post('/api/payment/create-order', (req, res) => {
       receipt: `rcpt_${userId.replace('usr_', '')}_${Date.now().toString().slice(-5)}`
     };
 
-    razorpay.orders.create(options, (err, order) => {
-      if (err) {
-        console.error('[Payment Create Order Error]:', err);
-        // Fallback to Mock Order
-        const mockOrderId = `order_mock_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
-        return res.json({
-          id: mockOrderId,
-          currency,
-          amount,
-          isMock: true,
-          key: process.env.RAZORPAY_KEY_ID || 'rzp_test_placeholder_key',
-          warning: 'Failed to create live order, falling back to mock: ' + err.message
-        });
-      }
-      res.json({
-        id: order.id,
-        currency: order.currency,
-        amount: order.amount,
-        isMock: false,
-        key: process.env.RAZORPAY_KEY_ID
-      });
+    const order = await razorpay.orders.create(options);
+    console.log(`[Payment] Razorpay Order Created: ${order.id}`);
+    res.json({
+      id: order.id,
+      currency: order.currency,
+      amount: order.amount,
+      isMock: false,
+      key: process.env.RAZORPAY_KEY_ID
     });
   } catch (err) {
     console.error('[Payment Create Order Catch Error]:', err);
-    const mockOrderId = `order_mock_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
-    res.json({
-      id: mockOrderId,
-      currency,
-      amount,
-      isMock: true,
-      key: process.env.RAZORPAY_KEY_ID || 'rzp_test_placeholder_key',
-      warning: 'Failed to create live order, falling back to mock: ' + err.message
+    res.status(400).json({
+      error: 'Razorpay failed to create payment order: ' + (err.description || err.message)
     });
   }
 });
