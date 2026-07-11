@@ -245,8 +245,36 @@
         <input type="text" id="room-title" required placeholder="e.g., Midnight Movie Lounge 🎬" class="w-full bg-surface-deep border border-glass-stroke rounded-xl px-4 py-3 focus:outline-none focus:border-secondary text-on-surface transition-all font-body-md">
       </div>
       <div>
-        <label for="video-url" class="block font-label-md text-label-md text-on-surface-variant mb-2 font-semibold">YouTube Video URL</label>
-        <input type="url" id="video-url" required placeholder="e.g., https://www.youtube.com/watch?v=zSWdZAZE3Tc" class="w-full bg-surface-deep border border-glass-stroke rounded-xl px-4 py-3 focus:outline-none focus:border-secondary text-on-surface transition-all font-body-md">
+        <label for="video-url" class="block font-label-md text-label-md text-on-surface-variant mb-2 font-semibold">Video URL</label>
+        <input type="url" id="video-url" placeholder="e.g., https://www.youtube.com/watch?v=zSWdZAZE3Tc" class="w-full bg-surface-deep border border-glass-stroke rounded-xl px-4 py-3 focus:outline-none focus:border-secondary text-on-surface transition-all font-body-md">
+      </div>
+      
+      <!-- Divider OR -->
+      <div class="flex items-center my-4">
+        <hr class="flex-grow border-glass-stroke">
+        <span class="px-3 text-text-muted font-label-sm text-xs">OR</span>
+        <hr class="flex-grow border-glass-stroke">
+      </div>
+
+      <!-- Upload Local Video File Option -->
+      <div>
+        <label for="lobby-video-file-input" class="block font-label-md text-label-md text-on-surface-variant mb-2 font-semibold">Upload Local Video</label>
+        <div class="relative w-full bg-surface-deep border border-dashed border-glass-stroke rounded-xl p-4 text-center cursor-pointer hover:border-primary transition-all">
+          <input type="file" id="lobby-video-file-input" accept="video/mp4, video/webm, video/ogg" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+          <span class="material-symbols-outlined text-[32px] text-on-surface-variant mb-1">cloud_upload</span>
+          <p id="lobby-upload-status-text" class="text-xs text-text-muted">Click or drag video file here (MP4/WebM, Max 500MB)</p>
+        </div>
+      </div>
+
+      <!-- Upload Progress Container (Hidden by default) -->
+      <div id="lobby-upload-progress-container" class="hidden space-y-2">
+        <div class="flex justify-between text-xs font-label-sm">
+          <span class="text-primary font-bold">Uploading video...</span>
+          <span id="lobby-upload-percentage" class="text-on-surface">0%</span>
+        </div>
+        <div class="w-full h-2 bg-surface-deep rounded-full overflow-hidden border border-glass-stroke">
+          <div id="lobby-upload-progress-bar" class="h-full bg-primary transition-all duration-150" style="width: 0%;"></div>
+        </div>
       </div>
       <div>
         <label for="room-category" class="block font-label-md text-label-md text-on-surface-variant mb-2 font-semibold">Category</label>

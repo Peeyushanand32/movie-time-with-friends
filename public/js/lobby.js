@@ -220,16 +220,103 @@ function initModal() {
     });
   }
 
+  let uploadedFileUrl = '';
+  const fileInput = document.getElementById('lobby-video-file-input');
+  const progressContainer = document.getElementById('lobby-upload-progress-container');
+  const progressBar = document.getElementById('lobby-upload-progress-bar');
+  const progressPercentage = document.getElementById('lobby-upload-percentage');
+  const statusText = document.getElementById('lobby-upload-status-text');
+
+  if (fileInput) {
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      if (statusText) {
+        statusText.textContent = `Selected: ${file.name} (${(file.size / (1024 * 1024)).toFixed(1)} MB)`;
+      }
+
+      // Disable inputs
+      const urlInput = document.getElementById('video-url');
+      const submitBtn = form.querySelector('button[type="submit"]');
+      if (urlInput) urlInput.disabled = true;
+      if (submitBtn) submitBtn.disabled = true;
+
+      if (progressContainer) progressContainer.classList.remove('hidden');
+
+      const formData = new FormData();
+      formData.append('video', file);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/upload', true);
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const percent = Math.round((e.loaded / e.total) * 100);
+          if (progressBar) progressBar.style.width = `${percent}%`;
+          if (progressPercentage) progressPercentage.textContent = `${percent}%`;
+        }
+      };
+
+      xhr.onload = () => {
+        if (progressContainer) progressContainer.classList.add('hidden');
+        if (progressBar) progressBar.style.width = '0%';
+        if (progressPercentage) progressPercentage.textContent = '0%';
+
+        if (xhr.status === 200) {
+          try {
+            const res = JSON.parse(xhr.responseText);
+            if (res.success) {
+              uploadedFileUrl = res.fileUrl;
+              if (urlInput) {
+                urlInput.value = res.fileUrl;
+                urlInput.disabled = true;
+              }
+              if (statusText) {
+                statusText.textContent = `Upload completed: ${file.name}`;
+              }
+            } else {
+              alert("Upload failed: " + (res.error || "Unknown error"));
+              if (urlInput) urlInput.disabled = false;
+            }
+          } catch(err) {
+            alert("Failed to parse upload response.");
+            if (urlInput) urlInput.disabled = false;
+          }
+        } else {
+          alert(`Upload failed with status: ${xhr.status}`);
+          if (urlInput) urlInput.disabled = false;
+        }
+        if (submitBtn) submitBtn.disabled = false;
+      };
+
+      xhr.onerror = () => {
+        if (urlInput) urlInput.disabled = false;
+        if (submitBtn) submitBtn.disabled = false;
+        if (progressContainer) progressContainer.classList.add('hidden');
+        alert("Network error occurred during file upload.");
+      };
+
+      xhr.send(formData);
+    });
+  }
+
   // Handle room creation submit
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const title = document.getElementById('room-title').value.trim();
-      const videoUrl = document.getElementById('video-url').value.trim();
+      const videoUrlVal = document.getElementById('video-url').value.trim();
+      const videoUrl = uploadedFileUrl || videoUrlVal;
       const category = document.getElementById('room-category').value;
       const isPrivate = privateToggle ? privateToggle.checked : false;
       const passcode = isPrivate ? passcodeField.value.trim() : null;
+
+      if (!videoUrl) {
+        alert("Please enter a Video URL or upload a video file.");
+        return;
+      }
 
       if (!userId) {
         alert("Session error. Please refresh the page.");
