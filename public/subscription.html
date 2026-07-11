@@ -256,22 +256,18 @@
 
       <!-- Payment Form -->
       <form id="checkout-form" class="space-y-4">
-        <div>
-          <label for="card-name" class="block font-label-md text-label-sm text-on-surface-variant mb-1 font-semibold">Cardholder Name</label>
-          <input type="text" id="card-name" required placeholder="e.g. John Doe" class="w-full bg-surface-deep border border-glass-stroke rounded-xl px-4 py-2.5 focus:outline-none focus:border-secondary text-on-surface transition-all text-sm font-body-md">
-        </div>
-        <div>
-          <label for="card-number" class="block font-label-md text-label-sm text-on-surface-variant mb-1 font-semibold">Card Number</label>
-          <input type="text" id="card-number" required maxlength="19" placeholder="4111 2222 3333 4444" class="w-full bg-surface-deep border border-glass-stroke rounded-xl px-4 py-2.5 focus:outline-none focus:border-secondary text-on-surface transition-all text-sm font-body-md font-mono">
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label for="card-expiry" class="block font-label-md text-label-sm text-on-surface-variant mb-1 font-semibold">Expiry Date</label>
-            <input type="text" id="card-expiry" required maxlength="5" placeholder="MM/YY" class="w-full bg-surface-deep border border-glass-stroke rounded-xl px-4 py-2.5 focus:outline-none focus:border-secondary text-on-surface transition-all text-sm font-body-md font-mono">
+        <div class="bg-surface-deep border border-glass-stroke rounded-2xl p-5 space-y-3 font-body-md text-sm">
+          <div class="flex justify-between">
+            <span class="text-text-muted">Subscription Plan:</span>
+            <span class="font-bold text-on-surface uppercase text-xs" id="summary-plan-tier">Premium</span>
           </div>
-          <div>
-            <label for="card-cvc" class="block font-label-md text-label-sm text-on-surface-variant mb-1 font-semibold">CVC / CVV</label>
-            <input type="password" id="card-cvc" required maxlength="3" placeholder="•••" class="w-full bg-surface-deep border border-glass-stroke rounded-xl px-4 py-2.5 focus:outline-none focus:border-secondary text-on-surface transition-all text-sm font-body-md font-mono">
+          <div class="flex justify-between">
+            <span class="text-text-muted">Duration Period:</span>
+            <span class="font-semibold text-white" id="summary-plan-duration">1 Month</span>
+          </div>
+          <div class="flex justify-between border-t border-glass-stroke pt-3 mt-1 font-bold">
+            <span class="text-on-surface">Total Amount:</span>
+            <span class="text-primary font-bold" id="summary-plan-price">₹139</span>
           </div>
         </div>
 
@@ -279,7 +275,8 @@
 
         <!-- Submit Button -->
         <button type="submit" id="checkout-submit-btn" class="w-full bg-primary text-on-primary font-bold py-3.5 rounded-xl hover:brightness-110 active:scale-95 transition-all text-title-md cursor-pointer mt-4 flex items-center justify-center gap-2">
-          <span>Pay &amp; Activate Access</span>
+          <span class="material-symbols-outlined text-[18px]">payment</span>
+          <span>Pay via Razorpay</span>
         </button>
       </form>
 
@@ -298,6 +295,7 @@
     </div>
   </footer>
 
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="/js/subscription.js"></script>
 </body>
 </html>

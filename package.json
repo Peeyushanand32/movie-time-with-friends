@@ -12,6 +12,7 @@
     "express": "^4.19.2",
     "googleapis": "^173.0.0",
     "multer": "^2.2.0",
+    "razorpay": "^2.9.6",
     "socket.io": "^4.7.5",
     "uuid": "^9.0.1"
   }

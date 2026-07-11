@@ -135,12 +135,27 @@ window.openCheckout = function (tier) {
   const tierDisplay = document.getElementById('checkout-tier-display');
   const durationDisplay = document.getElementById('checkout-duration-display');
 
+  const summaryPlanTier = document.getElementById('summary-plan-tier');
+  const summaryPlanDuration = document.getElementById('summary-plan-duration');
+  const summaryPlanPrice = document.getElementById('summary-plan-price');
+
   if (tierDisplay) {
     tierDisplay.textContent = tier;
     tierDisplay.className = tier === 'premium' ? 'font-bold text-primary uppercase' : 'font-bold text-secondary uppercase';
   }
   if (durationDisplay) {
     durationDisplay.textContent = `${durationLabels[currentDuration]} - ${prices[tier][currentDuration]}`;
+  }
+
+  if (summaryPlanTier) {
+    summaryPlanTier.textContent = tier;
+    summaryPlanTier.className = tier === 'premium' ? 'font-bold text-primary uppercase text-xs' : 'font-bold text-secondary uppercase text-xs';
+  }
+  if (summaryPlanDuration) {
+    summaryPlanDuration.textContent = durationLabels[currentDuration];
+  }
+  if (summaryPlanPrice) {
+    summaryPlanPrice.textContent = prices[tier][currentDuration];
   }
 
   // Clear previous errors
@@ -189,42 +204,6 @@ async function cancelSubscription() {
 }
 
 function setupCardInputs() {
-  const cardNumber = document.getElementById('card-number');
-  const cardExpiry = document.getElementById('card-expiry');
-  const cardCvc = document.getElementById('card-cvc');
-
-  if (cardNumber) {
-    cardNumber.addEventListener('input', (e) => {
-      // Formats: XXXX XXXX XXXX XXXX
-      let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-      let formatted = '';
-      for (let i = 0; i < value.length; i++) {
-        if (i > 0 && i % 4 === 0) formatted += ' ';
-        formatted += value[i];
-      }
-      e.target.value = formatted;
-    });
-  }
-
-  if (cardExpiry) {
-    cardExpiry.addEventListener('input', (e) => {
-      // Formats: MM/YY
-      let value = e.target.value.replace(/\//g, '').replace(/[^0-9]/gi, '');
-      if (value.length > 2) {
-        e.target.value = value.substring(0, 2) + '/' + value.substring(2, 4);
-      } else {
-        e.target.value = value;
-      }
-    });
-  }
-
-  if (cardCvc) {
-    cardCvc.addEventListener('input', (e) => {
-      e.target.value = e.target.value.replace(/[^0-9]/gi, '');
-    });
-  }
-
-  // Handle Form Submit
   const form = document.getElementById('checkout-form');
   const processingOverlay = document.getElementById('checkout-processing-overlay');
   const errorEl = document.getElementById('checkout-error');
@@ -233,62 +212,122 @@ function setupCardInputs() {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (errorEl) errorEl.classList.add('hidden');
-      if (processingOverlay) processingOverlay.classList.remove('hidden');
+      if (processingOverlay) {
+        processingOverlay.querySelector('p').textContent = "Creating payment order...";
+        processingOverlay.classList.remove('hidden');
+      }
 
-      const cardName = document.getElementById('card-name').value.trim();
-      const cardNumberVal = document.getElementById('card-number').value.replace(/\s/g, '');
-      const expiry = document.getElementById('card-expiry').value.trim();
-      const cvc = document.getElementById('card-cvc').value.trim();
+      try {
+        const res = await fetch('/api/payment/create-order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-user-id': currentUser.id
+          },
+          body: JSON.stringify({
+            tier: activeTier,
+            duration: currentDuration
+          })
+        });
 
-      // Artificial transaction latency for premium feel
-      setTimeout(async () => {
-        try {
-          const res = await fetch('/api/user/subscription', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-user-id': currentUser.id
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to create payment order.');
+
+        if (processingOverlay) processingOverlay.classList.add('hidden');
+
+        if (data.isMock) {
+          // Sandbox simulation fallback flow
+          const simulated = confirm(`Sandbox Checkout: Would you like to simulate a successful payment of ${prices[activeTier][currentDuration]} for the ${activeTier.toUpperCase()} (${durationLabels[currentDuration]}) plan?`);
+          if (simulated) {
+            if (processingOverlay) {
+              processingOverlay.querySelector('p').textContent = "Simulating verification...";
+              processingOverlay.classList.remove('hidden');
+            }
+            await verifyPaymentOnServer(data.id, `pay_mock_${Date.now()}`, `sig_mock_${Date.now()}`);
+          }
+        } else {
+          // Live checkout flow
+          const options = {
+            "key": data.key,
+            "amount": data.amount,
+            "currency": data.currency,
+            "name": "Obsidian Nebula",
+            "description": `${activeTier.toUpperCase()} Plan Subscription`,
+            "image": "https://api.dicebear.com/7.x/bottts/svg?seed=Obsidian",
+            "order_id": data.id,
+            "handler": async function (response) {
+              if (processingOverlay) {
+                processingOverlay.querySelector('p').textContent = "Verifying transaction signature...";
+                processingOverlay.classList.remove('hidden');
+              }
+              await verifyPaymentOnServer(response.razorpay_order_id, response.razorpay_payment_id, response.razorpay_signature);
             },
-            body: JSON.stringify({
-              tier: activeTier,
-              duration: currentDuration,
-              cardName,
-              cardNumber: cardNumberVal,
-              expiry,
-              cvc
-            })
+            "prefill": {
+              "name": currentUser.name || "Nebula User",
+              "email": currentUser.email || ""
+            },
+            "theme": {
+              "color": "#ffb0cd"
+            }
+          };
+          const rzp = new Razorpay(options);
+          rzp.on('payment.failed', function (response) {
+            alert('Payment Failed: ' + response.error.description);
           });
-
-          if (processingOverlay) processingOverlay.classList.add('hidden');
-
-          if (res.ok) {
-            const data = await res.json();
-            currentUser = data.user;
-            localStorage.setItem('userProfile', JSON.stringify(currentUser));
-            if (window.auth) {
-              auth.user = currentUser;
-              auth.updateNavbar();
-            }
-            closeCheckout();
-            updateDashboard();
-            alert(data.message || "Subscription activated!");
-            location.reload();
-          } else {
-            const errData = await res.json();
-            if (errorEl) {
-              errorEl.textContent = errData.error || "Payment processing failed. Try again.";
-              errorEl.classList.remove('hidden');
-            }
-          }
-        } catch (err) {
-          if (processingOverlay) processingOverlay.classList.add('hidden');
-          if (errorEl) {
-            errorEl.textContent = "Server communication error. Please try again.";
-            errorEl.classList.remove('hidden');
-          }
+          rzp.open();
         }
-      }, 1500);
+      } catch (err) {
+        if (processingOverlay) processingOverlay.classList.add('hidden');
+        if (errorEl) {
+          errorEl.textContent = err.message || "Payment initiation failed.";
+          errorEl.classList.remove('hidden');
+        }
+      }
     });
+  }
+}
+
+async function verifyPaymentOnServer(orderId, paymentId, signature) {
+  const processingOverlay = document.getElementById('checkout-processing-overlay');
+  const errorEl = document.getElementById('checkout-error');
+  try {
+    const res = await fetch('/api/payment/verify-payment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-user-id': currentUser.id
+      },
+      body: JSON.stringify({
+        razorpay_order_id: orderId,
+        razorpay_payment_id: paymentId,
+        razorpay_signature: signature,
+        tier: activeTier,
+        duration: currentDuration
+      })
+    });
+
+    if (processingOverlay) processingOverlay.classList.add('hidden');
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to verify transaction.');
+
+    currentUser = data.user;
+    localStorage.setItem('userProfile', JSON.stringify(currentUser));
+    if (window.auth) {
+      auth.user = currentUser;
+      auth.updateNavbar();
+    }
+    closeCheckout();
+    updateDashboard();
+    alert('Success! Subscription successfully activated.');
+    location.reload();
+  } catch (err) {
+    if (processingOverlay) processingOverlay.classList.add('hidden');
+    if (errorEl) {
+      errorEl.textContent = 'Verification Error: ' + err.message;
+      errorEl.classList.remove('hidden');
+    }
+    alert('Verification Error: ' + err.message);
   }
 }
 
