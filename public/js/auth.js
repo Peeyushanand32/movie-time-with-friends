@@ -254,13 +254,15 @@ class AuthManager {
   async sendHeartbeat() {
     const storedUserId = this.getUserId();
     if (!storedUserId) return;
+    const isWatching = window.location.pathname.includes('room.html');
     try {
       const res = await fetch('/api/user/heartbeat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'x-user-id': storedUserId
-        }
+        },
+        body: JSON.stringify({ isWatching })
       });
       if (res.ok) {
         const data = await res.json();

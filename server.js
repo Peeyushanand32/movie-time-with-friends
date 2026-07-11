@@ -220,6 +220,8 @@ app.get('/api/user/session', (req, res) => {
 // API Endpoint for trial heartbeat (invoked every 30 seconds)
 app.post('/api/user/heartbeat', (req, res) => {
   const userId = req.headers['x-user-id'];
+  const { isWatching } = req.body;
+  
   if (!userId) {
     return res.status(400).json({ error: "Missing x-user-id header" });
   }
@@ -229,7 +231,7 @@ app.post('/api/user/heartbeat', (req, res) => {
   }
 
   const activeSub = isSubscriptionActive(user);
-  if (!activeSub) {
+  if (!activeSub && isWatching) {
     const currentAccumulated = user.accumulatedTime || 0;
     user = db.saveUser(userId, {
       accumulatedTime: currentAccumulated + 30
