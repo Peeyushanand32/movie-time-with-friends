@@ -38,6 +38,27 @@ function initializePlayer() {
       } else {
         // Host starts tracking time
         startHostTimeTracking();
+
+        // Report duration to server for auto-deletion scheduling
+        const report = () => {
+          const duration = player.getDuration();
+          if (duration > 0) {
+            socket.emit('report-duration', { duration });
+            console.log(`[Duration-Report] Reported movie duration: ${duration}s`);
+            return true;
+          }
+          return false;
+        };
+
+        if (!report()) {
+          let attempts = 0;
+          const interval = setInterval(() => {
+            attempts++;
+            if (report() || attempts > 20) {
+              clearInterval(interval);
+            }
+          }, 500);
+        }
       }
     },
     onStateChange: (event) => {

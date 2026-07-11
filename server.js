@@ -272,6 +272,94 @@ app.post('/api/rooms/:id/verify', (req, res) => {
 // Real-time tracking of active socket connections in rooms
 const roomConnections = {}; // { roomId: { socketId: { userId, name, avatarUrl, isHost, isMuted } } }
 
+// Active deletion timers: { roomId: { timer: Timeout, fileUrl: String } }
+const activeDeletionTimers = {};
+
+// Function to schedule movie file deletion
+function scheduleDeletion(roomId, fileUrl, duration, currentTime = 0) {
+  // Clear any existing deletion timer for this room
+  cancelDeletion(roomId);
+
+  if (!fileUrl || !fileUrl.startsWith('/uploads/')) return;
+
+  const filename = path.basename(fileUrl);
+  const filepath = path.join(UPLOAD_DIR, filename);
+
+  const remainingTime = Math.max(0, duration - currentTime);
+  const delayMs = (remainingTime + 30 * 60) * 1000;
+
+  console.log(`[Auto-Delete] Scheduling deletion of ${filename} in ${(delayMs / 1000 / 60).toFixed(1)} minutes (Remaining: ${(remainingTime / 60).toFixed(1)} mins + 30 mins).`);
+
+  const timer = setTimeout(() => {
+    try {
+      if (fs.existsSync(filepath)) {
+        fs.unlinkSync(filepath);
+        console.log(`[Auto-Delete] Successfully deleted completed movie file: ${filename}`);
+      }
+      delete activeDeletionTimers[roomId];
+    } catch (err) {
+      console.error(`[Auto-Delete] Error deleting file ${filename}:`, err);
+    }
+  }, delayMs);
+
+  activeDeletionTimers[roomId] = {
+    timer,
+    fileUrl
+  };
+}
+
+// Function to cancel active deletion timer
+function cancelDeletion(roomId) {
+  if (activeDeletionTimers[roomId]) {
+    clearTimeout(activeDeletionTimers[roomId].timer);
+    console.log(`[Auto-Delete] Cancelled deletion timer for room: ${roomId}`);
+    delete activeDeletionTimers[roomId];
+  }
+}
+
+// Function to delete the file immediately (e.g. when video changed or room destroyed)
+function deleteFileImmediately(fileUrl) {
+  if (!fileUrl || !fileUrl.startsWith('/uploads/')) return;
+  const filename = path.basename(fileUrl);
+  const filepath = path.join(UPLOAD_DIR, filename);
+  try {
+    if (fs.existsSync(filepath)) {
+      fs.unlinkSync(filepath);
+      console.log(`[Auto-Delete] Deleted file immediately: ${filename}`);
+    }
+  } catch (err) {
+    console.error(`[Auto-Delete] Error during immediate file deletion for ${filename}:`, err);
+  }
+}
+
+// Fail-safe cleanup job running on startup and every 30 minutes
+function runPeriodicCleanup() {
+  try {
+    const files = fs.readdirSync(UPLOAD_DIR);
+    const now = Date.now();
+    const expiryAge = 4 * 60 * 60 * 1000; // 4 hours in milliseconds
+
+    files.forEach(file => {
+      if (file === '.gitkeep') return;
+      const filepath = path.join(UPLOAD_DIR, file);
+      const stat = fs.statSync(filepath);
+
+      // If file is older than 4 hours, delete it
+      if (now - stat.mtimeMs > expiryAge) {
+        fs.unlinkSync(filepath);
+        console.log(`[Fail-Safe Cleanup] Deleted stale upload file: ${file}`);
+      }
+    });
+  } catch (err) {
+    console.error("[Fail-Safe Cleanup] Error during periodic uploads cleanup:", err);
+  }
+}
+
+// Run cleanup immediately on startup
+runPeriodicCleanup();
+// Run every 30 minutes
+setInterval(runPeriodicCleanup, 30 * 60 * 1000);
+
 io.on('connection', (socket) => {
   console.log(`Socket connected: ${socket.id}`);
 
@@ -394,6 +482,16 @@ io.on('connection', (socket) => {
 
     // Broadcast play/pause/seek events to other viewers
     socket.to(currentRoomId).emit('video-state-change', event);
+
+    // Dynamic Deletion Timer Scheduling
+    const room = db.getRoom(currentRoomId);
+    if (room && room.videoUrl && room.videoUrl.startsWith('/uploads/') && room.videoDuration) {
+      if (event.type === 'play' || event.type === 'seek') {
+        scheduleDeletion(currentRoomId, room.videoUrl, room.videoDuration, event.time);
+      } else if (event.type === 'pause') {
+        cancelDeletion(currentRoomId);
+      }
+    }
   });
 
   // Handle Dynamic Video Change (Host to viewers)
@@ -405,8 +503,15 @@ io.on('connection', (socket) => {
       return; // Only hosts can change the video
     }
 
+    // If there was an old file deletion scheduled for this room, clear and delete the old file immediately
+    const oldRoom = db.getRoom(currentRoomId);
+    if (oldRoom && oldRoom.videoUrl && oldRoom.videoUrl.startsWith('/uploads/')) {
+      cancelDeletion(currentRoomId);
+      deleteFileImmediately(oldRoom.videoUrl);
+    }
+
     const resolvedUrl = await resolveVideoUrl(videoUrl);
-    db.saveRoom(currentRoomId, { videoUrl: resolvedUrl });
+    db.saveRoom(currentRoomId, { videoUrl: resolvedUrl, videoDuration: null });
     io.to(currentRoomId).emit('video-changed', { videoUrl: resolvedUrl });
 
     const systemMsg = {
@@ -419,6 +524,16 @@ io.on('connection', (socket) => {
     };
     db.addMessage(currentRoomId, systemMsg);
     io.to(currentRoomId).emit('chat-message', systemMsg);
+  });
+
+  // Handle Video Duration Report for Auto-Deletion
+  socket.on('report-duration', ({ duration }) => {
+    if (!currentRoomId) return;
+    const userConnection = roomConnections[currentRoomId]?.[socket.id];
+    if (!userConnection || !userConnection.isHost) return;
+
+    db.saveRoom(currentRoomId, { videoDuration: duration });
+    console.log(`[Auto-Delete] Saved room ${currentRoomId} video duration: ${duration}s`);
   });
 
   // Handle Emoji Reactions
@@ -710,6 +825,14 @@ io.on('connection', (socket) => {
       // If room is completely empty, clean it up after 5 minutes unless it's a featured room
       if (activeUsers.length === 0) {
         db.saveRoom(currentRoomId, { userCount: 0 });
+
+        // Immediate cleanup of uploaded file if room becomes empty
+        const room = db.getRoom(currentRoomId);
+        if (room && room.videoUrl && room.videoUrl.startsWith('/uploads/')) {
+          cancelDeletion(currentRoomId);
+          deleteFileImmediately(room.videoUrl);
+        }
+
         if (currentRoomId !== 'featured-interstellar') {
           setTimeout(() => {
             if (!roomConnections[currentRoomId] || Object.keys(roomConnections[currentRoomId]).length === 0) {

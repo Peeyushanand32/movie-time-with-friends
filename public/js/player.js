@@ -155,6 +155,7 @@ class UnifiedPlayer {
 
     this.player = new Vimeo.Player(iframe);
     this.player.ready().then(() => {
+      this.player.getDuration().then(d => { this.vimeoDuration = d; });
       if (this.options.onReady) this.options.onReady();
     });
 
@@ -274,6 +275,15 @@ class UnifiedPlayer {
       if (this.provider === 'youtube' && this.player.getCurrentTime) return this.player.getCurrentTime();
       if (this.provider === 'vimeo') return this.lastTime;
       if (this.provider === 'html5') return this.player.currentTime;
+    } catch (e) {}
+    return 0;
+  }
+
+  getDuration() {
+    try {
+      if (this.provider === 'youtube' && this.player.getDuration) return this.player.getDuration();
+      if (this.provider === 'vimeo') return this.vimeoDuration || 0;
+      if (this.provider === 'html5') return this.player.duration || 0;
     } catch (e) {}
     return 0;
   }
