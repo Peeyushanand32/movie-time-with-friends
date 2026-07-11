@@ -94,7 +94,10 @@ function renderRooms() {
           </div>
           <div class="flex items-center justify-between border-t border-glass-stroke pt-4 mt-2">
             <span class="text-text-muted font-label-sm text-[10px] uppercase">${new Date(room.createdAt).toLocaleDateString()}</span>
-            <button onclick="location.href='/room.html?id=${room.id}'" class="bg-primary/10 text-primary border border-primary/20 px-4 py-1.5 rounded-lg font-label-md text-label-md hover:bg-primary hover:text-on-primary transition-all">Join Room</button>
+            <div class="flex gap-2">
+              ${room.hostId === userId && room.id !== 'featured-interstellar' ? `<button onclick="deleteRoom('${room.id}', event)" class="bg-error/10 text-error border border-error/20 px-3 py-1.5 rounded-lg font-label-md text-label-md hover:bg-error hover:text-white transition-all flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">delete</span>Delete</button>` : ''}
+              <button onclick="location.href='/room.html?id=${room.id}'" class="bg-primary/10 text-primary border border-primary/20 px-4 py-1.5 rounded-lg font-label-md text-label-md hover:bg-primary hover:text-on-primary transition-all">Join Room</button>
+            </div>
           </div>
         </div>
       </div>
@@ -401,3 +404,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 });
+
+window.deleteRoom = async function(roomId, event) {
+  if (event) event.stopPropagation();
+
+  if (!confirm("Are you sure you want to permanently delete this room? This will boot any active watch users out.")) {
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/rooms/${roomId}`, {
+      method: 'DELETE',
+      headers: {
+        'x-user-id': userId
+      }
+    });
+
+    if (res.ok) {
+      alert("Room deleted successfully.");
+      await fetchRooms();
+    } else {
+      const data = await res.json();
+      alert("Error: " + data.error);
+    }
+  } catch (err) {
+    console.error("Failed to delete room:", err);
+    alert("Connection error.");
+  }
+};

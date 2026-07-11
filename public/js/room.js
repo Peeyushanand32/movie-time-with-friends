@@ -109,6 +109,11 @@ function connectSocket() {
     }
   });
 
+  socket.on('room-deleted', () => {
+    alert("This room has been closed by the host.");
+    window.location.href = '/lobby.html';
+  });
+
   socket.on('room-joined', ({ roomDetails, isHost: hostStatus, chatHistory, queue }) => {
     isHost = hostStatus;
     roomUrl = roomDetails.videoUrl;
@@ -120,6 +125,38 @@ function connectSocket() {
 
     updateRoleBadge();
     initHostControls();
+
+    // Setup delete button for hosts
+    const deleteBtn = document.getElementById('delete-room-sidebar-btn');
+    if (deleteBtn) {
+      if (isHost && roomId !== 'featured-interstellar') {
+        deleteBtn.classList.remove('hidden');
+        deleteBtn.onclick = async () => {
+          if (!confirm("Are you sure you want to permanently delete this room? This will boot all active users out.")) return;
+          try {
+            const res = await fetch(`/api/rooms/${roomId}`, {
+              method: 'DELETE',
+              headers: {
+                'x-user-id': userId
+              }
+            });
+            if (res.ok) {
+              alert("Room deleted successfully.");
+              window.location.href = '/lobby.html';
+            } else {
+              const data = await res.json();
+              alert("Error: " + data.error);
+            }
+          } catch (err) {
+            console.error("Failed to delete room:", err);
+            alert("Connection error.");
+          }
+        };
+      } else {
+        deleteBtn.classList.add('hidden');
+        deleteBtn.onclick = null;
+      }
+    }
 
     // Render Chat History
     const chatBox = document.getElementById('chat-messages');
@@ -137,6 +174,38 @@ function connectSocket() {
   socket.on('host-status-changed', (hostStatus) => {
     isHost = hostStatus;
     updateRoleBadge();
+    
+    // Also update Delete Room button visibility
+    const deleteBtn = document.getElementById('delete-room-sidebar-btn');
+    if (deleteBtn) {
+      if (isHost && roomId !== 'featured-interstellar') {
+        deleteBtn.classList.remove('hidden');
+        deleteBtn.onclick = async () => {
+          if (!confirm("Are you sure you want to permanently delete this room? This will boot all active users out.")) return;
+          try {
+            const res = await fetch(`/api/rooms/${roomId}`, {
+              method: 'DELETE',
+              headers: {
+                'x-user-id': userId
+              }
+            });
+            if (res.ok) {
+              alert("Room deleted successfully.");
+              window.location.href = '/lobby.html';
+            } else {
+              const data = await res.json();
+              alert("Error: " + data.error);
+            }
+          } catch (err) {
+            console.error("Failed to delete room:", err);
+            alert("Connection error.");
+          }
+        };
+      } else {
+        deleteBtn.classList.add('hidden');
+        deleteBtn.onclick = null;
+      }
+    }
     
     // Reload player with controls if host status changes
     if (player) {

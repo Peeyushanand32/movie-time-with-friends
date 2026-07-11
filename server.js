@@ -798,6 +798,39 @@ app.get('/api/rooms/:id', (req, res) => {
   });
 });
 
+// API Endpoint to delete a room
+app.delete('/api/rooms/:id', (req, res) => {
+  const userId = req.headers['x-user-id'];
+  const roomId = req.params.id;
+
+  if (!userId) {
+    return res.status(400).json({ error: "Missing x-user-id header" });
+  }
+
+  const room = db.getRoom(roomId);
+  if (!room) {
+    return res.status(404).json({ error: "Room not found" });
+  }
+
+  if (roomId === 'featured-interstellar') {
+    return res.status(400).json({ error: "Featured room cannot be deleted" });
+  }
+
+  if (room.hostId !== userId) {
+    return res.status(403).json({ error: "Only the host can delete this room" });
+  }
+
+  db.deleteRoom(roomId);
+
+  if (room.videoUrl && room.videoUrl.startsWith('/uploads/')) {
+    deleteFileImmediately(room.videoUrl);
+  }
+
+  io.to(roomId).emit('room-deleted', { roomId });
+
+  res.json({ success: true, message: "Room deleted successfully." });
+});
+
 // API Endpoint to verify room passcode
 app.post('/api/rooms/:id/verify', (req, res) => {
   const room = db.getRoom(req.params.id);
