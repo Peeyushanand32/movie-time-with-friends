@@ -4,20 +4,20 @@ let activeTier = null; // premium or ultimate
 
 const prices = {
   premium: {
-    '1d': '₹25',
-    '15d': '₹60',
-    '1m': '₹120',
-    '3m': '₹300',
-    '6m': '₹540',
-    '12m': '₹1000'
+    '1d': '₹29',
+    '15d': '₹69',
+    '1m': '₹139',
+    '3m': '₹339',
+    '6m': '₹569',
+    '12m': '₹1099'
   },
   ultimate: {
     '1d': '₹1',
     '15d': '₹1',
     '1m': '₹1',
     '3m': '₹1',
-    '6m': '₹1',
-    '12m': '₹1'
+    '6m': '₹900',
+    '12m': '₹1600'
   }
 };
 
@@ -76,7 +76,7 @@ function updateDashboard() {
   } else {
     tierDisplay.textContent = currentUser.tier;
     tierDisplay.className = currentUser.tier === 'premium' ? 'text-primary font-extrabold uppercase' : 'text-secondary font-extrabold uppercase';
-    
+
     let daysRemaining = 'Unlimited';
     if (currentUser.subscriptionExpiresAt) {
       const diffTime = new Date(currentUser.subscriptionExpiresAt) - new Date();
@@ -93,9 +93,9 @@ function updateDashboard() {
   }
 }
 
-window.setDuration = function(duration) {
+window.setDuration = function (duration) {
   currentDuration = duration;
-  
+
   // Highlight duration button
   const buttons = ['1d', '15d', '1m', '3m', '6m', '12m'];
   buttons.forEach(d => {
@@ -117,12 +117,12 @@ window.setDuration = function(duration) {
 
   if (pricePremium) pricePremium.textContent = prices.premium[duration];
   if (periodPremium) periodPremium.textContent = durationPeriods[duration];
-  
+
   if (priceUltimate) priceUltimate.textContent = prices.ultimate[duration];
   if (periodUltimate) periodUltimate.textContent = durationPeriods[duration];
 };
 
-window.openCheckout = function(tier) {
+window.openCheckout = function (tier) {
   if (!currentUser) {
     alert("Please log in to purchase a subscription.");
     if (window.auth) auth.showAuthModal('login');
@@ -150,7 +150,7 @@ window.openCheckout = function(tier) {
   if (modal) modal.classList.remove('hidden');
 };
 
-window.closeCheckout = function() {
+window.closeCheckout = function () {
   const modal = document.getElementById('checkout-modal');
   if (modal) modal.classList.add('hidden');
 };
