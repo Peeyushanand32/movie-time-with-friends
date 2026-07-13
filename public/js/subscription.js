@@ -4,12 +4,12 @@ let activeTier = null; // premium or ultimate
 
 const prices = {
   premium: {
-    '1d': '₹29',
-    '15d': '₹69',
-    '1m': '₹139',
-    '3m': '₹339',
-    '6m': '₹569',
-    '12m': '₹1099'
+    '1d': '₹39',
+    '15d': '₹79',
+    '1m': '₹179',
+    '3m': '₹479',
+    '6m': '₹889',
+    '12m': '₹1499'
   },
   ultimate: {
     '1d': '₹49',
@@ -251,7 +251,7 @@ function setupCardInputs() {
             "key": data.key,
             "amount": data.amount,
             "currency": data.currency,
-            "name": "Obsidian Nebula",
+            "name": "Movie Partner",
             "description": `${activeTier.toUpperCase()} Plan Subscription`,
             "image": "https://api.dicebear.com/7.x/bottts/svg?seed=Obsidian",
             "order_id": data.id,
@@ -263,11 +263,11 @@ function setupCardInputs() {
               await verifyPaymentOnServer(response.razorpay_order_id, response.razorpay_payment_id, response.razorpay_signature);
             },
             "prefill": {
-              "name": currentUser.name || "Nebula User",
+              "name": currentUser.name || "Movie Partner User",
               "email": currentUser.email || ""
             },
             "theme": {
-              "color": "#ffb0cd"
+              "color": "#e50914"
             }
           };
           const rzp = new Razorpay(options);

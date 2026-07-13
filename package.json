@@ -1,7 +1,7 @@
 {
-  "name": "obsidian-nebula",
+  "name": "movie-partner",
   "version": "1.0.0",
-  "description": "Obsidian Nebula - Fullstack Watch Party Platform",
+  "description": "Movie Partner - Fullstack Watch Party Platform",
   "main": "server.js",
   "type": "module",
   "scripts": {

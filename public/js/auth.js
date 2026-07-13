@@ -1,85 +1,30 @@
-// Authentication utility for Obsidian Nebula Watch Party Platform
+// Authentication utility for Movie Partner Watch Party Platform
 class AuthManager {
   constructor() {
     this.user = null;
     this.userIdKey = 'userId';
     this.userProfileKey = 'userProfile';
-    this.googleClientId = null;
+    this.pendingCreateRoom = false;
     this.gsiLoaded = false;
+    this.googleClientId = null;
   }
 
   async init() {
-    // Fetch Google Client ID configuration
-    try {
-      const configRes = await fetch('/api/config');
-      if (configRes.ok) {
-        const config = await configRes.json();
-        this.googleClientId = config.googleClientId;
-      }
-    } catch (err) {
-      console.error("Failed to load Google Client ID config:", err);
-    }
-
-    // Load Google Identity Services script if Client ID is configured
-    if (this.googleClientId) {
-      // Setup global callback for Google Sign-In response
-      window.handleCredentialResponse = async (response) => {
-        const errorEl = document.getElementById('auth-error-msg');
-        if (errorEl) errorEl.classList.add('hidden');
-        
-        try {
-          const res = await fetch('/api/auth/google', {
-            method: 'POST',
-            headers: { 
-              'Content-Type': 'application/json',
-              'x-user-id': this.getUserId() || ''
-            },
-            body: JSON.stringify({ token: response.credential })
-          });
-          
-          const data = await res.json();
-          if (!res.ok) {
-            throw new Error(data.error || "Google Sign-In failed");
-          }
-          
-          if (data.success) {
-            this.user = data.user;
-            localStorage.setItem(this.userIdKey, this.user.id);
-            localStorage.setItem(this.userProfileKey, JSON.stringify(this.user));
-            this.updateNavbar();
-            this.hideAuthModal();
-            // Reload if inside room or profile page to update state
-            if (window.location.pathname.includes('room.html') || window.location.pathname.includes('profile.html')) {
-              window.location.reload();
-            }
-          }
-        } catch (err) {
-          console.error("Google auth handler error:", err);
-          if (errorEl) {
-            errorEl.textContent = err.message;
-            errorEl.classList.remove('hidden');
-          }
+    // Load Google Identity Services SDK dynamically
+    if (!document.querySelector('script[src="https://accounts.google.com/gsi/client"]')) {
+      const script = document.createElement('script');
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        this.gsiLoaded = true;
+        if (document.getElementById('auth-modal') && !document.getElementById('auth-modal').classList.contains('hidden')) {
+          this.initGoogleSignIn();
         }
       };
-
-      if (!document.getElementById('google-gsi-script')) {
-        const script = document.createElement('script');
-        script.id = 'google-gsi-script';
-        script.src = 'https://accounts.google.com/gsi/client';
-        script.async = true;
-        script.defer = true;
-        script.onload = () => {
-          this.gsiLoaded = true;
-          // If modal is open when script loads, render button
-          const modal = document.getElementById('auth-modal');
-          if (modal && !modal.classList.contains('hidden')) {
-            this.renderGoogleButton();
-          }
-        };
-        document.head.appendChild(script);
-      } else {
-        this.gsiLoaded = true;
-      }
+      document.head.appendChild(script);
+    } else {
+      this.gsiLoaded = true;
     }
 
     const storedUserId = localStorage.getItem(this.userIdKey);
@@ -137,12 +82,13 @@ class AuthManager {
 
   navigateToLobby(options = {}) {
     if (this.isRegistered()) {
-      let url = '/lobby.html';
+      let url = '/index.html';
       if (options && options.create) {
         url += '?create=true';
       }
       window.location.href = url;
     } else {
+      this.pendingCreateRoom = options.create || false;
       this.showAuthModal('login');
     }
   }
@@ -311,7 +257,7 @@ class AuthManager {
             </div>
             <h3 class="font-display-lg text-headline-lg text-primary font-bold">1-Hour Trial Completed</h3>
             <p class="text-on-surface-variant font-body-md leading-relaxed">
-              Your 1-hour free trial on the **Obsidian Nebula** watch party platform has ended. Subscribe now to unlock full access, private rooms, direct video uploads, and unlimited capacity watch parties!
+              Your 1-hour free trial on the **Movie Partner** watch party platform has ended. Subscribe now to unlock full access, private rooms, direct video uploads, and unlimited capacity watch parties!
             </p>
             
             <div class="pt-4 flex flex-col gap-3">
@@ -373,6 +319,111 @@ class AuthManager {
     }
   }
 
+  async loginWithGoogle(credential, isDemo = false) {
+    const storedUserId = this.getUserId();
+    const headers = { 'Content-Type': 'application/json' };
+    if (storedUserId) {
+      headers['x-user-id'] = storedUserId;
+    }
+
+    try {
+      const res = await fetch('/api/auth/google', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ credential, isDemo })
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to log in with Google");
+      }
+
+      if (data.success) {
+        this.user = data.user;
+        localStorage.setItem(this.userIdKey, this.user.id);
+        localStorage.setItem(this.userProfileKey, JSON.stringify(this.user));
+        this.updateNavbar();
+        this.hideAuthModal();
+        
+        if (this.pendingCreateRoom) {
+          this.pendingCreateRoom = false;
+          window.location.href = '/index.html?create=true';
+        } else {
+          window.location.reload();
+        }
+      }
+    } catch (err) {
+      const errorEl = document.getElementById('auth-error-msg');
+      if (errorEl) {
+        errorEl.textContent = err.message;
+        errorEl.classList.remove('hidden');
+      }
+    }
+  }
+
+  async initGoogleSignIn() {
+    if (!this.googleClientId) {
+      try {
+        const res = await fetch('/api/auth/google/config');
+        if (res.ok) {
+          const data = await res.json();
+          this.googleClientId = data.clientId;
+        }
+      } catch (err) {
+        console.error("Failed to load Google client config:", err);
+      }
+    }
+
+    const isRealGoogleAvailable = this.googleClientId && 
+                                  !this.googleClientId.startsWith('your-') && 
+                                  window.google && 
+                                  window.google.accounts;
+
+    const gWrapper = document.getElementById('g-signin-btn-wrapper');
+    const mockBtn = document.getElementById('mock-google-btn');
+
+    if (isRealGoogleAvailable) {
+      if (gWrapper) {
+        gWrapper.style.display = 'block';
+        try {
+          google.accounts.id.initialize({
+            client_id: this.googleClientId,
+            callback: async (response) => {
+              await this.loginWithGoogle(response.credential, false);
+            }
+          });
+          google.accounts.id.renderButton(
+            gWrapper,
+            { theme: 'outline', size: 'large', width: '380' }
+          );
+        } catch (err) {
+          console.error("Error rendering Google button:", err);
+          gWrapper.style.display = 'none';
+          if (mockBtn) mockBtn.classList.remove('hidden');
+        }
+      }
+      if (mockBtn) mockBtn.classList.add('hidden');
+    } else {
+      if (gWrapper) gWrapper.style.display = 'none';
+      if (mockBtn) {
+        mockBtn.classList.remove('hidden');
+        mockBtn.onclick = async () => {
+          const mockHeader = btoa(JSON.stringify({ alg: "none", typ: "JWT" }));
+          const mockPayload = btoa(JSON.stringify({
+            iss: "https://accounts.google.com",
+            sub: "google-mock-" + Math.floor(Math.random() * 100000),
+            email: "demo-user@gmail.com",
+            email_verified: true,
+            name: "Demo Movie Partner",
+            picture: "https://lh3.googleusercontent.com/a/ACg8ocK_S6Wv3H1z9g=s96-c"
+          }));
+          const mockCredential = `${mockHeader}.${mockPayload}.mocksignature`;
+          await this.loginWithGoogle(mockCredential, true);
+        };
+      }
+    }
+  }
+
   showAuthModal(mode = 'login') {
     let modal = document.getElementById('auth-modal');
     if (!modal) {
@@ -383,7 +434,7 @@ class AuthManager {
       modal.innerHTML = `
         <div class="glass-panel w-full max-w-md rounded-3xl p-8 border border-glass-stroke shadow-2xl relative mx-4">
           <button onclick="auth.hideAuthModal()" class="material-symbols-outlined absolute top-6 right-6 text-on-surface-variant hover:text-primary transition-colors cursor-pointer">close</button>
-          <h3 id="auth-modal-title" class="font-display-lg text-headline-lg text-primary mb-2 font-bold text-center">Join the Nebula</h3>
+          <h3 id="auth-modal-title" class="font-display-lg text-headline-lg text-primary mb-2 font-bold text-center">Join Movie Partner</h3>
           <p id="auth-modal-desc" class="text-text-muted font-body-md mb-6 text-center">Log in or create an account to persist your profile.</p>
           
           <form id="auth-form" class="space-y-4">
@@ -402,17 +453,26 @@ class AuthManager {
             </button>
           </form>
           
-          <!-- Google Sign-In Option -->
-          <div id="google-signin-container" class="mt-6 hidden">
-            <div class="relative flex py-2 items-center">
-              <div class="flex-grow border-t border-glass-stroke"></div>
-              <span class="flex-shrink mx-4 text-on-surface-variant text-[11px] font-semibold uppercase tracking-wider">Or continue with</span>
-              <div class="flex-grow border-t border-glass-stroke"></div>
-            </div>
-            <div id="google-signin-btn" class="flex justify-center mt-4"></div>
+          <div class="relative flex py-4 items-center">
+            <div class="flex-grow border-t border-glass-stroke"></div>
+            <span class="flex-shrink mx-4 text-on-surface-variant text-label-sm font-medium">or</span>
+            <div class="flex-grow border-t border-glass-stroke"></div>
+          </div>
+
+          <div id="google-signin-container" class="w-full flex justify-center pb-2">
+            <div id="g-signin-btn-wrapper" class="w-full flex justify-center"></div>
+            <button type="button" id="mock-google-btn" class="hidden w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-50 text-gray-900 font-bold py-3 px-4 rounded-xl border border-gray-300 shadow-sm transition-all active:scale-95 text-title-md cursor-pointer">
+              <svg class="w-5 h-5" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+              <span>Sign in with Google</span>
+            </button>
           </div>
           
-          <div class="mt-6 text-center font-body-md text-on-surface-variant">
+          <div class="mt-4 text-center font-body-md text-on-surface-variant">
             <span id="auth-switch-text">Don't have an account?</span>
             <button onclick="auth.switchAuthMode()" id="auth-switch-btn" class="text-primary font-bold hover:underline ml-1">Sign Up</button>
           </div>
@@ -434,8 +494,11 @@ class AuthManager {
             await auth.signup(username, password);
           }
           auth.hideAuthModal();
-          // Reload if inside room or profile page to update state
-          if (window.location.pathname.includes('room.html') || window.location.pathname.includes('profile.html')) {
+          
+          if (auth.pendingCreateRoom) {
+            auth.pendingCreateRoom = false;
+            window.location.href = '/index.html?create=true';
+          } else {
             window.location.reload();
           }
         } catch (err) {
@@ -448,32 +511,8 @@ class AuthManager {
     this.currentMode = mode;
     this.updateAuthModalUI();
     
-    if (this.googleClientId && this.gsiLoaded) {
-      this.renderGoogleButton();
-    }
-    
     modal.classList.remove('hidden');
-  }
-
-  renderGoogleButton() {
-    const container = document.getElementById('google-signin-container');
-    const buttonDiv = document.getElementById('google-signin-btn');
-    if (container) container.classList.remove('hidden');
-    
-    if (buttonDiv && window.google && window.google.accounts && window.google.accounts.id) {
-      try {
-        google.accounts.id.initialize({
-          client_id: this.googleClientId,
-          callback: window.handleCredentialResponse
-        });
-        google.accounts.id.renderButton(
-          buttonDiv,
-          { theme: "outline", size: "large", type: "standard", shape: "rectangular", text: "signin_with", logo_alignment: "left", width: 320 }
-        );
-      } catch (err) {
-        console.error("Error rendering Google button:", err);
-      }
-    }
+    this.initGoogleSignIn();
   }
 
   hideAuthModal() {
@@ -497,14 +536,14 @@ class AuthManager {
     if (errorEl) errorEl.classList.add('hidden');
 
     if (this.currentMode === 'login') {
-      if (title) title.textContent = "Log In to Nebula";
+      if (title) title.textContent = "Log In to Movie Partner";
       if (desc) desc.textContent = "Welcome back! Log in to access your profile and rooms.";
       if (submitBtn) submitBtn.textContent = "Log In";
       if (switchText) switchText.textContent = "Don't have an account?";
       if (switchBtn) switchBtn.textContent = "Sign Up";
     } else {
       if (title) title.textContent = "Create Account";
-      if (desc) desc.textContent = "Join the Obsidian Nebula watch party platform today.";
+      if (desc) desc.textContent = "Join the Movie Partner watch party platform today.";
       if (submitBtn) submitBtn.textContent = "Create Account";
       if (switchText) switchText.textContent = "Already have an account?";
       if (switchBtn) switchBtn.textContent = "Log In";

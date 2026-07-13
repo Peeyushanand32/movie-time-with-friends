@@ -181,7 +181,7 @@ async function resolveVideoUrl(url) {
   return trimmedUrl;
 }
 
-// Predefined high-quality avatars from Obsidian Nebula designs
+// Predefined high-quality avatars from Movie Partner designs
 const AVATARS = [
   "https://lh3.googleusercontent.com/aida-public/AB6AXuD4EI8_vyQW7UERp6LoH-hQHDh8uKCs3uhrq8qn0VzXXoF6-nkVpfiSWqtl6V7ngOuHv4s2nctk4tvMMU9DoVtlEPUqci5nmXeAWxgT28IkXri8R8QmF8EoDMndU5K9Ttnr-IVH0_PJIVARsLym-IA3lZ3aujA_L0LjxZg7DoGt6BolVWHZ3-rns3txN6q-Y2imJPSBXrCKcMxrnW_eNkIVB5Sq_Xld85_vxEfb39NGFPJzJENeYGe3Yxp0w3X2wPBAcmdHQy529Ec",
   "https://lh3.googleusercontent.com/aida-public/AB6AXuCoYvXafi5wyc_3ATntE40fEyFXEK3bdne_A2GoJnOHPqT5OZp0C3zLAo6UxUlsjHVlp84CtC6s1T-Dhn2pBSv_3Mw8pI4Hfzh74beiw11oA8c-51pEe7Cu75zJ-Dzptzd4qXGGeB8syc8Wv8Py67cUiD1_bXwEQtkUHfKS_Zp6fzZdVI9AdqtNdNw4h-zn7BDqzj98Cq78MCMkHlOz0sjmD5saYbCqqhfBz1I1uwVzU89r1RrmMxsATdFjh3o0jkOLWnWYNE18IWw",
@@ -311,12 +311,12 @@ app.post('/api/user/subscription', (req, res) => {
 
 const pricesMap = {
   premium: {
-    '1d': 29,
-    '15d': 69,
-    '1m': 139,
-    '3m': 339,
-    '6m': 569,
-    '12m': 1099
+    '1d': 39,
+    '15d': 79,
+    '1m': 179,
+    '3m': 479,
+    '6m': 889,
+    '12m': 1499
   },
   ultimate: {
     '1d': 49,
@@ -373,7 +373,7 @@ app.post('/api/payment/create-order', async (req, res) => {
       currency: currency,
       receipt: `rcpt_${userId.replace('usr_', '')}_${Date.now().toString().slice(-5)}`,
       notes: {
-        website_name: "Movie Friend"
+        website_name: "Movie Partner"
       }
     };
 
@@ -487,6 +487,66 @@ app.post('/api/auth/login', (req, res) => {
     res.json({ success: true, user: safeUser });
   } else {
     res.status(401).json({ error: "Invalid username or password" });
+  }
+});
+
+// API Endpoints for Google Sign-In
+app.get('/api/auth/google/config', (req, res) => {
+  res.json({ clientId: process.env.GOOGLE_CLIENT_ID || '' });
+});
+
+app.post('/api/auth/google', async (req, res) => {
+  const { credential, isDemo } = req.body;
+  const tempUserId = req.headers['x-user-id'] || uuidv4();
+
+  if (!credential) {
+    return res.status(400).json({ error: "Google credential token is required" });
+  }
+
+  try {
+    let email, name, picture, googleId;
+
+    const currentClientId = process.env.GOOGLE_CLIENT_ID;
+    const isMockMode = isDemo || !currentClientId || currentClientId.startsWith('your-');
+
+    if (isMockMode) {
+      const tokenParts = credential.split('.');
+      if (tokenParts.length < 2) {
+        throw new Error("Invalid token format");
+      }
+      const decodedPayload = JSON.parse(Buffer.from(tokenParts[1], 'base64').toString());
+      email = decodedPayload.email;
+      name = decodedPayload.name;
+      picture = decodedPayload.picture;
+      googleId = decodedPayload.sub;
+    } else {
+      const client = new google.auth.OAuth2(currentClientId);
+      const ticket = await client.verifyIdToken({
+        idToken: credential,
+        audience: currentClientId
+      });
+      const payload = ticket.getPayload();
+      email = payload.email;
+      name = payload.name;
+      picture = payload.picture;
+      googleId = payload.sub;
+    }
+
+    if (!googleId) {
+      throw new Error("Failed to retrieve Google ID from token");
+    }
+
+    let user = db.getUserByGoogleId(googleId);
+
+    if (!user) {
+      user = db.registerGoogleUser(tempUserId, googleId, email, name, picture);
+    }
+
+    const { passwordHash, salt, ...safeUser } = user;
+    res.json({ success: true, user: safeUser });
+  } catch (err) {
+    console.error("[Google Auth Error]", err);
+    res.status(400).json({ error: err.message || "Failed to authenticate with Google" });
   }
 });
 
@@ -648,81 +708,6 @@ app.get('/api/drive-check', async (req, res) => {
   }
 
   res.json(status);
-});
-
-// API Endpoint to expose public configuration (like Google Client ID) to the client
-app.get('/api/config', (req, res) => {
-  res.json({
-    googleClientId: process.env.GOOGLE_CLIENT_ID || ""
-  });
-});
-
-// API Endpoint for Google Sign-In verification and login/registration
-app.post('/api/auth/google', async (req, res) => {
-  const { token } = req.body;
-  const tempUserId = req.headers['x-user-id'] || uuidv4();
-
-  if (!token) {
-    return res.status(400).json({ error: "Google credentials token is required" });
-  }
-
-  const clientId = process.env.GOOGLE_CLIENT_ID;
-  if (!clientId) {
-    return res.status(500).json({ error: "Google Client ID is not configured on the server" });
-  }
-
-  try {
-    const client = new google.auth.OAuth2(clientId);
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: clientId,
-    });
-    
-    const payload = ticket.getPayload();
-    const email = payload.email;
-    const name = payload.name;
-    const picture = payload.picture;
-
-    if (!email) {
-      return res.status(400).json({ error: "Failed to retrieve email from Google token" });
-    }
-
-    // Generate safe username from email (alphanumeric and underscores only)
-    const baseUsername = email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '_');
-    
-    // Check if a user is already registered with this exact username
-    let user = db.getUserByUsername(baseUsername);
-
-    if (!user) {
-      // Find if we need to resolve username collision
-      let finalUsername = baseUsername;
-      let suffix = 1;
-      while (db.getUserByUsername(finalUsername)) {
-        finalUsername = `${baseUsername}${suffix}`;
-        suffix++;
-      }
-
-      // Register new user
-      // We generate a secure random password since they authenticate through Google
-      const randomPassword = crypto.randomBytes(16).toString('hex');
-      user = db.registerUser(tempUserId, finalUsername, randomPassword, picture);
-      
-      // Update the user display name to Google profile name
-      user = db.saveUser(user.id, { name: name });
-    } else {
-      // If user exists, sync their name and avatar if needed, and log them in
-      user = db.saveUser(user.id, {
-        name: name || user.name,
-        avatarUrl: picture || user.avatarUrl
-      });
-    }
-
-    const { passwordHash, salt, ...safeUser } = user;
-    res.json({ success: true, user: safeUser });
-  } catch (err) {
-    console.error("[Google Auth] Verification failed:", err);
-    res.status(400).json({ error: "Google authentication failed: " + err.message });
-  }
 });
 
 // API Endpoint to list rooms
@@ -1033,9 +1018,9 @@ io.on('connection', (socket) => {
     const systemMsg = {
       id: uuidv4(),
       userId: 'system',
-      userName: 'Nebula',
+      userName: 'System',
       avatarUrl: '',
-      text: `${user.name} has joined the Nebula.`,
+      text: `${user.name} has joined the room.`,
       timestamp: new Date().toISOString()
     };
     db.addMessage(roomId, systemMsg);
@@ -1123,7 +1108,7 @@ io.on('connection', (socket) => {
     const systemMsg = {
       id: uuidv4(),
       userId: 'system',
-      userName: 'Nebula',
+      userName: 'System',
       avatarUrl: '',
       text: `${userConnection.name} changed the video.`,
       timestamp: new Date().toISOString()
@@ -1183,7 +1168,7 @@ io.on('connection', (socket) => {
       const systemMsg = {
         id: uuidv4(),
         userId: 'system',
-        userName: 'Nebula',
+        userName: 'System',
         avatarUrl: '',
         text: `${userConnection.name} added "${title}" to the queue.`,
         timestamp: new Date().toISOString()
@@ -1233,7 +1218,7 @@ io.on('connection', (socket) => {
       const systemMsg = {
         id: uuidv4(),
         userId: 'system',
-        userName: 'Nebula',
+        userName: 'System',
         avatarUrl: '',
         text: `Playing next video: "${item.title}".`,
         timestamp: new Date().toISOString()
@@ -1276,7 +1261,7 @@ io.on('connection', (socket) => {
       const systemMsg = {
         id: uuidv4(),
         userId: 'system',
-        userName: 'Nebula',
+        userName: 'System',
         avatarUrl: '',
         text: `${targetUser.name} was kicked from the room by the host.`,
         timestamp: new Date().toISOString()
@@ -1316,7 +1301,7 @@ io.on('connection', (socket) => {
       const systemMsg = {
         id: uuidv4(),
         userId: 'system',
-        userName: 'Nebula',
+        userName: 'System',
         avatarUrl: '',
         text: `${targetUser.name} was banned from the room by the host.`,
         timestamp: new Date().toISOString()
@@ -1348,7 +1333,7 @@ io.on('connection', (socket) => {
       const systemMsg = {
         id: uuidv4(),
         userId: 'system',
-        userName: 'Nebula',
+        userName: 'System',
         avatarUrl: '',
         text: `${targetUser.name} has been ${isMuted ? 'muted' : 'unmuted'} by the host.`,
         timestamp: new Date().toISOString()
@@ -1463,9 +1448,9 @@ io.on('connection', (socket) => {
           const systemMsg = {
             id: uuidv4(),
             userId: 'system',
-            userName: 'Nebula',
+            userName: 'System',
             avatarUrl: '',
-            text: `${leavingUser.name} has left the Nebula.`,
+            text: `${leavingUser.name} has left the room.`,
             timestamp: new Date().toISOString()
           };
           db.addMessage(currentRoomId, systemMsg);
@@ -1478,7 +1463,7 @@ io.on('connection', (socket) => {
 
 httpServer.listen(PORT, () => {
   console.log(`====================================================`);
-  console.log(` Obsidian Nebula server running on port ${PORT}`);
+  console.log(` Movie Partner server running on port ${PORT}`);
   console.log(` Link: http://localhost:${PORT}`);
   console.log(`====================================================`);
 });

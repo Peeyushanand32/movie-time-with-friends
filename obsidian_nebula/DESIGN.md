@@ -1,5 +1,5 @@
 ---
-name: Obsidian Nebula
+name: Movie Partner
 colors:
   surface: '#131312'
   surface-dim: '#131312'

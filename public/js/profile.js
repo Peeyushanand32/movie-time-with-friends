@@ -151,7 +151,7 @@ async function fetchUserRooms() {
       list.innerHTML = `
         <div class="col-span-full py-8 text-center text-on-surface-variant glass-card rounded-2xl p-6">
           <p class="font-body-md mb-2">You don't have any active watch rooms.</p>
-          <button onclick="location.href='/lobby.html?create=true'" class="text-primary font-label-md text-label-md hover:underline font-bold">Create a Watch Room now</button>
+          <button onclick="location.href='/index.html?create=true'" class="text-primary font-label-md text-label-md hover:underline font-bold">Create a Watch Room now</button>
         </div>
       `;
       return;

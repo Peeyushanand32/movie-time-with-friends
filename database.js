@@ -24,7 +24,7 @@ const defaultDb = {
           userId: "system",
           userName: "Nebula_Voyager",
           avatarUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuD-hP_w7MokkTtZNoylSNihD9tiZIJFgpo0WmAiIE0WXGMrZBg06mflC1n9eFcOOGc2h3IUZz-AfBeKwxCXvLLFgR-1AoF96uJgBmd4HowfBbCClZMlijohHYVL0Vc3PlcuUBlQ5r83kG4etIck9ES964okiOzPY_9dGvND9i9NiaIZFfykwvaRyz3H2uWiwI5dmguGGcYlreUJFx47RONMhFLpYRkQbkuUOH8Ed2u1Zs6nJU2xiSPsLb1OWI4gzNcAskt-uWY0sSs",
-          text: "Welcome to the Obsidian Nebula! Play the video and let's watch in sync.",
+          text: "Welcome to the Movie Partner! Play the video and let's watch in sync.",
           timestamp: new Date().toISOString()
         }
       ],
@@ -144,6 +144,58 @@ export const db = {
       return safeUser;
     }
     return null;
+  },
+
+  getUserByGoogleId(googleId) {
+    const data = readDb();
+    const user = Object.values(data.users).find(u => u.googleId === googleId);
+    if (!user) return null;
+    return {
+      tier: 'free',
+      accumulatedTime: 0,
+      subscriptionExpiresAt: null,
+      ...user
+    };
+  },
+
+  registerGoogleUser(userId, googleId, email, name, avatarUrl) {
+    const data = readDb();
+    
+    // Ensure unique username
+    let baseUsername = email ? email.split('@')[0] : name.replace(/\s+/g, '').toLowerCase();
+    baseUsername = baseUsername.replace(/[^a-zA-Z0-9_]/g, ''); // keep it alphanumeric + underscore
+    if (!baseUsername) baseUsername = "user";
+    
+    let username = baseUsername;
+    let counter = 1;
+    while (Object.values(data.users).some(u => u.username && u.username.toLowerCase() === username.toLowerCase())) {
+      username = `${baseUsername}${counter}`;
+      counter++;
+    }
+
+    const newUser = {
+      id: userId,
+      username: username,
+      name: name || username,
+      googleId,
+      email,
+      avatarUrl: avatarUrl || "https://lh3.googleusercontent.com/a/default-user=s96-c",
+      tier: 'free',
+      accumulatedTime: 0,
+      subscriptionExpiresAt: null,
+      createdAt: new Date().toISOString()
+    };
+
+    // Preserve details if mapping from a guest user session
+    if (data.users[userId]) {
+      newUser.tier = data.users[userId].tier || 'free';
+      newUser.accumulatedTime = data.users[userId].accumulatedTime || 0;
+      newUser.subscriptionExpiresAt = data.users[userId].subscriptionExpiresAt || null;
+    }
+
+    data.users[userId] = newUser;
+    writeDb(data);
+    return newUser;
   },
 
   getRooms() {

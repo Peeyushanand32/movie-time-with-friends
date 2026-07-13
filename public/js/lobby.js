@@ -77,7 +77,6 @@ function renderRooms() {
         <div class="relative aspect-video overflow-hidden border-b border-glass-stroke">
           <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="${thumb}" alt="${room.title}">
           <div class="absolute top-3 left-3 flex gap-2">
-            <span class="bg-black/60 backdrop-blur-md text-white px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">${room.category}</span>
             ${isLive ? `<span class="bg-primary/80 backdrop-blur-md text-on-primary px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider animate-pulse">Live</span>` : ''}
             ${room.isPrivate ? `<span class="bg-error/80 backdrop-blur-md text-white px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">lock</span>Private</span>` : ''}
           </div>
@@ -330,7 +329,7 @@ function initModal() {
       const title = document.getElementById('room-title').value.trim();
       const videoUrlVal = document.getElementById('video-url').value.trim();
       const videoUrl = uploadedFileUrl || videoUrlVal;
-      const category = document.getElementById('room-category').value;
+      const category = 'General';
       const isPrivate = privateToggle ? privateToggle.checked : false;
       const passcode = isPrivate ? passcodeField.value.trim() : null;
 

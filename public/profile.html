@@ -1,61 +1,35 @@
-<!DOCTYPE html><html lang="en" class="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>My Profile - Obsidian Nebula</title><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><link rel="stylesheet" href="/css/custom.css"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script src="/js/auth.js"></script><script id="tailwind-config">try{
+<!DOCTYPE html><html lang="en" class="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>My Profile - Movie Partner</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><link rel="stylesheet" href="/css/custom.css"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script src="/js/auth.js"></script><script id="tailwind-config">try{
       tailwind.config = {
         darkMode: "class",
         theme: {
           extend: {
             "colors": {
-                    "on-tertiary-fixed": "#001e2f",
-                    "on-secondary-container": "#b0b2ff",
-                    "outline": "#a68992",
                     "glass-stroke": "rgba(255, 255, 255, 0.08)",
-                    "on-surface": "#e5e2e0",
-                    "background": "#131312",
-                    "on-tertiary": "#00344d",
-                    "surface": "#131312",
-                    "text-primary": "#E6E6E6",
-                    "on-primary-fixed": "#3e0021",
-                    "surface-tint": "#ffb0cd",
-                    "primary-fixed": "#ffd9e4",
-                    "tertiary-fixed-dim": "#89ceff",
-                    "surface-bright": "#3a3938",
-                    "primary": "#ffb0cd",
-                    "on-error": "#690005",
-                    "on-surface-variant": "#dfbec8",
-                    "surface-container-low": "#1c1c1a",
-                    "surface-dim": "#131312",
-                    "primary-container": "#d12b81",
-                    "on-error-container": "#ffdad6",
-                    "inverse-surface": "#e5e2e0",
-                    "on-background": "#e5e2e0",
-                    "surface-container-high": "#2a2a29",
-                    "tertiary-fixed": "#c9e6ff",
-                    "surface-container-lowest": "#0e0e0d",
-                    "on-primary": "#640039",
-                    "surface-elevated": "#1E1E1E",
-                    "secondary": "#c0c1ff",
-                    "surface-variant": "#353533",
-                    "on-primary-container": "#fff7f7",
-                    "primary-fixed-dim": "#ffb0cd",
-                    "surface-deep": "#090909",
-                    "on-tertiary-container": "#f6faff",
-                    "tertiary-container": "#007aae",
-                    "secondary-container": "#3131c0",
-                    "secondary-fixed-dim": "#c0c1ff",
-                    "on-tertiary-fixed-variant": "#004c6e",
-                    "error": "#ffb4ab",
-                    "on-primary-fixed-variant": "#8d0052",
-                    "surface-container-highest": "#353533",
-                    "on-secondary": "#1000a9",
-                    "surface-container": "#20201e",
-                    "on-secondary-fixed": "#07006c",
-                    "inverse-primary": "#b60b6c",
-                    "inverse-on-surface": "#31302f",
-                    "error-container": "#93000a",
-                    "on-secondary-fixed-variant": "#2f2ebe",
-                    "text-muted": "#9CA3AF",
-                    "secondary-fixed": "#e1e0ff",
-                    "outline-variant": "#584048",
-                    "tertiary": "#89ceff"
+                    "on-surface": "#f5f5f5",
+                    "background": "#141414",
+                    "surface": "#141414",
+                    "text-primary": "#ffffff",
+                    "surface-bright": "#222222",
+                    "primary": "#e50914",
+                    "on-surface-variant": "#aaaaaa",
+                    "surface-container-low": "#161616",
+                    "surface-dim": "#141414",
+                    "primary-container": "#b80710",
+                    "inverse-surface": "#ffffff",
+                    "on-background": "#ffffff",
+                    "surface-container-high": "#282828",
+                    "surface-container-lowest": "#0c0c0c",
+                    "on-primary": "#ffffff",
+                    "surface-elevated": "#1a1a1a",
+                    "secondary": "#f5f5f5",
+                    "surface-variant": "#222222",
+                    "on-primary-container": "#ffffff",
+                    "surface-deep": "#0c0c0c",
+                    "error": "#ef4444",
+                    "surface-container-highest": "#333333",
+                    "on-secondary": "#111111",
+                    "surface-container": "#1c1c1c",
+                    "text-muted": "#aaaaaa"
             },
             "borderRadius": {
                     "DEFAULT": "0.25rem",
@@ -73,11 +47,11 @@
             },
             "fontFamily": {
                     "body-md": ["Inter"],
-                    "display-lg": ["Sora"],
-                    "title-md": ["Sora"],
+                    "display-lg": ["Inter"],
+                    "title-md": ["Inter"],
                     "label-sm": ["JetBrains Mono"],
-                    "headline-lg-mobile": ["Sora"],
-                    "headline-lg": ["Sora"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-lg": ["Inter"],
                     "body-lg": ["Inter"],
                     "label-md": ["JetBrains Mono"]
             },
@@ -97,14 +71,12 @@
     }catch(_e){}</script></head><body class="font-body-md text-body-md antialiased bg-surface-deep text-on-surface">
 <!-- TopNavBar -->
 <nav class="fixed top-0 w-full z-50 bg-surface-dim/80 flex justify-between items-center px-margin-desktop h-16 w-full glass-stroke border-b border-glass-stroke backdrop-blur-md">
-<div class="font-display-lg text-display-lg font-bold text-primary tracking-tighter cursor-pointer" onclick="location.href='/'">Obsidian Nebula</div>
+<div class="cursor-pointer" onclick="location.href='/'"><img src="/logo.png" alt="Movie Partner" class="h-11 object-contain rounded-lg"></div>
 <div class="hidden md:flex items-center gap-8 font-title-md text-title-md">
-<a href="/lobby.html" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200">Explore</a>
-<a href="/lobby.html" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200">Community</a>
 <a href="/subscription.html" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200">Subscription</a>
 </div>
 <div class="flex items-center gap-4">
-<button onclick="location.href='/lobby.html?create=true'" class="bg-primary text-on-primary font-bold px-6 py-2 rounded-full active:scale-95 transition-transform hover:brightness-110">Create Room</button>
+<button onclick="auth.navigateToLobby({create: true})" class="bg-primary text-on-primary font-bold px-6 py-2 rounded-full active:scale-95 transition-transform hover:brightness-110">Create Room</button>
 <div id="navbar-user-controls" class="flex items-center gap-2">
 <div class="w-10 h-10 rounded-full bg-surface-variant overflow-hidden border border-glass-stroke cursor-pointer" onclick="location.href='/profile.html'">
 <img id="nav-avatar" class="w-full h-full object-cover" src="">
@@ -115,16 +87,12 @@
 <!-- SideNavBar (Desktop) -->
 <aside class="hidden md:flex fixed left-0 top-0 h-full w-sidebar-width bg-surface-container border-r border-glass-stroke flex-col py-6 gap-2 mt-16 z-40">
 <div class="px-6 mb-6">
-<h2 class="font-headline-lg text-headline-lg text-primary">Nebula Lobby</h2>
+<h2 class="font-headline-lg text-headline-lg text-primary">My Space</h2>
 </div>
 <nav class="flex-grow">
-<a class="text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 px-4 py-3 flex items-center gap-3 transition-all" href="/lobby.html">
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 px-4 py-3 flex items-center gap-3 transition-all" href="/index.html">
 <span class="material-symbols-outlined">home</span>
 <span class="font-label-md text-label-md">Home</span>
-</a>
-<a class="text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 px-4 py-3 flex items-center gap-3 transition-all" href="/lobby.html">
-<span class="material-symbols-outlined">movie</span>
-<span class="font-label-md text-label-md">Watch Rooms</span>
 </a>
 <a class="text-on-surface-variant bg-surface-variant/50 text-primary rounded-xl mx-2 px-4 py-3 flex items-center gap-3 transition-all" href="/profile.html">
 <span class="material-symbols-outlined text-primary">person</span>
@@ -136,14 +104,14 @@
 </a>
 </nav>
 <div class="mt-auto px-4 pb-20">
-<button onclick="location.href='/lobby.html?create=true'" class="w-full bg-secondary text-on-secondary font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-transform">Go Live</button>
+<button onclick="auth.navigateToLobby({create: true})" class="w-full bg-secondary text-on-secondary font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-transform">Go Live</button>
 </div>
 </aside>
 <!-- Main Content Canvas -->
 <main class="md:pl-sidebar-width pt-16 pb-20 md:pb-8 min-h-screen bg-surface-deep">
 <div class="max-w-6xl mx-auto p-4 md:p-8">
 <!-- User Profile Header -->
-<header class="relative mb-8 rounded-3xl overflow-hidden glass-stroke nebula-glow">
+<header class="relative mb-8 rounded-3xl overflow-hidden glass-stroke">
 <div class="h-48 w-full relative bg-gradient-to-r from-primary/10 via-secondary/10 to-transparent">
 <div class="absolute inset-0 bg-gradient-to-t from-surface-deep to-transparent"></div>
 </div>
@@ -152,7 +120,7 @@
 <img id="profile-banner-avatar" class="w-full h-full object-cover rounded-2xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqXzSlsB8UYdOm-qKnIkif9GRXhglhOppdD1OgwvvmCK76umnafL32ifkpxi8OL-b4xaDBCqXg5crZcYsvzai3bAVb9_UJhb7WbWHmMK9Shp_eRNBBppeM2uHlXLzvZq1hqatHpHlfLagSSO43YXuNTX2Ijv4Yf0TsIX5XzlXtxfPbtIi4ZU40cQTspaPWjdaVtHAygfg-jzFt2fMc8WrY41e_-RL3FvE7XVWShTP3IQE9VO3uVfxLOK2MOGi6QN5gNCNhnsV3zPo">
 </div>
 <div class="flex-grow text-center md:text-left">
-<h1 id="profile-banner-name" class="font-display-lg text-display-lg text-primary font-bold">Nebula_Voyager</h1>
+<h1 id="profile-banner-name" class="font-display-lg text-display-lg text-primary font-bold">Movie_Friend_Fan</h1>
 <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 mt-1">
 <span id="profile-tier-badge" class="px-2.5 py-0.5 rounded-full bg-surface-variant text-on-surface-variant border border-glass-stroke text-[11px] font-bold uppercase tracking-wider">Free Trial</span>
 <p id="profile-banner-meta" class="font-body-lg text-body-lg text-text-muted">Digital Curator &amp; Night Owl</p>
@@ -169,13 +137,13 @@
 <section class="md:col-span-8 space-y-6">
 <div class="flex items-center justify-between px-2">
 <h3 class="font-headline-lg text-headline-lg text-on-surface font-bold">Active Rooms</h3>
-<a class="text-primary font-label-md text-label-md hover:underline" href="/lobby.html">Browse All</a>
+<a class="text-primary font-label-md text-label-md hover:underline" href="/index.html">Browse All</a>
 </div>
 <!-- Dynamically populated or static fallback -->
 <div id="my-rooms-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
   <div class="col-span-full py-8 text-center text-on-surface-variant glass-card rounded-2xl p-6">
     <p class="font-body-md mb-2">No active rooms found.</p>
-    <button onclick="location.href='/lobby.html?create=true'" class="text-primary font-label-md text-label-md hover:underline">Create a Watch Room now</button>
+    <button onclick="auth.navigateToLobby({create: true})" class="text-primary font-label-md text-label-md hover:underline">Create a Watch Room now</button>
   </div>
 </div>
 
@@ -241,7 +209,7 @@
         <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-hP_w7MokkTtZNoylSNihD9tiZIJFgpo0WmAiIE0WXGMrZBg06mflC1n9eFcOOGc2h3IUZz-AfBeKwxCXvLLFgR-1AoF96uJgBmd4HowfBbCClZMlijohHYVL0Vc3PlcuUBlQ5r83kG4etIck9ES964okiOzPY_9dGvND9i9NiaIZFfykwvaRyz3H2uWiwI5dmguGGcYlreUJFx47RONMhFLpYRkQbkuUOH8Ed2u1Zs6nJU2xiSPsLb1OWI4gzNcAskt-uWY0sSs">
       </div>
       <div class="flex-grow">
-        <div class="font-label-md text-label-md text-on-surface font-semibold">Nebula_Voyager</div>
+        <div class="font-label-md text-label-md text-on-surface font-semibold">Cinema_Buff</div>
         <div class="text-[10px] text-primary">System Host</div>
       </div>
     </div>
@@ -278,7 +246,7 @@
 </main>
 <!-- BottomNavBar (Mobile Only) -->
 <nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface-container-highest/80 border-t border-glass-stroke backdrop-blur-xl flex justify-around items-center px-4 py-2 pb-safe">
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all p-2 active:scale-90" href="/lobby.html">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all p-2 active:scale-90" href="/index.html">
 <span class="material-symbols-outlined">grid_view</span>
 <span class="font-label-sm text-[10px]">Lobby</span>
 </a>

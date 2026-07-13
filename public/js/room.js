@@ -126,46 +126,14 @@ function connectSocket() {
     updateRoleBadge();
     initHostControls();
 
-    // Setup delete button for hosts
-    const deleteBtn = document.getElementById('delete-room-sidebar-btn');
-    if (deleteBtn) {
-      if (isHost && roomId !== 'featured-interstellar') {
-        deleteBtn.classList.remove('hidden');
-        deleteBtn.onclick = async () => {
-          if (!confirm("Are you sure you want to permanently delete this room? This will boot all active users out.")) return;
-          try {
-            const res = await fetch(`/api/rooms/${roomId}`, {
-              method: 'DELETE',
-              headers: {
-                'x-user-id': userId
-              }
-            });
-            if (res.ok) {
-              alert("Room deleted successfully.");
-              window.location.href = '/lobby.html';
-            } else {
-              const data = await res.json();
-              alert("Error: " + data.error);
-            }
-          } catch (err) {
-            console.error("Failed to delete room:", err);
-            alert("Connection error.");
-          }
-        };
-      } else {
-        deleteBtn.classList.add('hidden');
-        deleteBtn.onclick = null;
-      }
-    }
+    // Setup delete buttons for hosts
+    setupDeleteButtons(isHost);
 
     // Render Chat History
     const chatBox = document.getElementById('chat-messages');
     chatBox.innerHTML = '';
     chatHistory.forEach(msg => appendMessage(msg));
     chatBox.scrollTop = chatBox.scrollHeight;
-
-    // Render Queue
-    renderQueueList(queue || []);
 
     // Load Video Player
     initializePlayer();
@@ -175,37 +143,8 @@ function connectSocket() {
     isHost = hostStatus;
     updateRoleBadge();
     
-    // Also update Delete Room button visibility
-    const deleteBtn = document.getElementById('delete-room-sidebar-btn');
-    if (deleteBtn) {
-      if (isHost && roomId !== 'featured-interstellar') {
-        deleteBtn.classList.remove('hidden');
-        deleteBtn.onclick = async () => {
-          if (!confirm("Are you sure you want to permanently delete this room? This will boot all active users out.")) return;
-          try {
-            const res = await fetch(`/api/rooms/${roomId}`, {
-              method: 'DELETE',
-              headers: {
-                'x-user-id': userId
-              }
-            });
-            if (res.ok) {
-              alert("Room deleted successfully.");
-              window.location.href = '/lobby.html';
-            } else {
-              const data = await res.json();
-              alert("Error: " + data.error);
-            }
-          } catch (err) {
-            console.error("Failed to delete room:", err);
-            alert("Connection error.");
-          }
-        };
-      } else {
-        deleteBtn.classList.add('hidden');
-        deleteBtn.onclick = null;
-      }
-    }
+    // Also update Delete Room buttons visibility
+    setupDeleteButtons(isHost);
     
     // Reload player with controls if host status changes
     if (player) {
@@ -298,12 +237,6 @@ function connectSocket() {
     location.href = '/lobby.html';
   });
 
-  // ==========================================
-  // PLAYLIST QUEUE CLIENT EVENT LISTENERS
-  // ==========================================
-  socket.on('queue-updated', (queue) => {
-    renderQueueList(queue);
-  });
 
   // ==========================================
   // HOST MODERATION CLIENT EVENT LISTENERS
@@ -395,6 +328,47 @@ function updateRoleBadge() {
     if (overlay) overlay.classList.remove('hidden');
     if (changeVideoBtn) changeVideoBtn.classList.add('hidden');
   }
+}
+
+function setupDeleteButtons(hostStatus) {
+  const sidebarBtn = document.getElementById('delete-room-sidebar-btn');
+  const footerBtn = document.getElementById('delete-room-btn');
+  
+  const showBtn = hostStatus && roomId !== 'featured-interstellar';
+  
+  const handleDelete = async () => {
+    if (!confirm("Are you sure you want to permanently delete this room? This will boot all active users out.")) return;
+    try {
+      const res = await fetch(`/api/rooms/${roomId}`, {
+        method: 'DELETE',
+        headers: {
+          'x-user-id': userId
+        }
+      });
+      if (res.ok) {
+        alert("Room deleted successfully.");
+        window.location.href = '/lobby.html';
+      } else {
+        const data = await res.json();
+        alert("Error: " + data.error);
+      }
+    } catch (err) {
+      console.error("Failed to delete room:", err);
+      alert("Connection error.");
+    }
+  };
+
+  [sidebarBtn, footerBtn].forEach(btn => {
+    if (btn) {
+      if (showBtn) {
+        btn.classList.remove('hidden');
+        btn.onclick = handleDelete;
+      } else {
+        btn.classList.add('hidden');
+        btn.onclick = null;
+      }
+    }
+  });
 }
 
 function appendMessage(msg) {
@@ -684,108 +658,6 @@ function triggerFloatingEmoji(emoji) {
 }
 
 // ==========================================
-// PLAYLIST QUEUE COMPONENT FUNCTIONS
-// ==========================================
-function renderQueueList(queue) {
-  const list = document.getElementById('queue-items-list');
-  const clearBtn = document.getElementById('clear-queue-btn');
-  if (!list) return;
-
-  if (isHost && queue.length > 0) {
-    if (clearBtn) clearBtn.classList.remove('hidden');
-  } else {
-    if (clearBtn) clearBtn.classList.add('hidden');
-  }
-
-  if (queue.length === 0) {
-    list.innerHTML = `<p class="text-text-muted text-[11px] text-center py-4">No videos in queue.</p>`;
-    return;
-  }
-
-  list.innerHTML = queue.map(item => {
-    const canPlay = isHost;
-    const canRemove = isHost || item.addedBy === userId;
-    
-    let domain = "Link";
-    try {
-      domain = new URL(item.videoUrl).hostname.replace('www.', '');
-    } catch(e) {}
-
-    return `
-      <div class="bg-surface-elevated/40 border border-glass-stroke rounded-xl p-2.5 flex flex-col gap-1 text-[11px] hover:border-primary/20 transition-all">
-        <div class="font-bold text-on-surface line-clamp-1">${escapeHTML(item.title || "Video Link")}</div>
-        <div class="text-[9px] text-text-muted flex justify-between items-center">
-          <span>Added by ${escapeHTML(item.addedByName)} (${domain})</span>
-        </div>
-        <div class="flex items-center justify-end gap-1.5 mt-1 border-t border-glass-stroke/30 pt-1.5">
-          ${canPlay ? `
-            <button onclick="playQueueItem('${item.id}')" class="text-xs bg-primary/10 border border-primary/20 hover:bg-primary/25 text-primary px-2 py-0.5 rounded font-bold transition-all flex items-center gap-0.5 cursor-pointer">
-              <span class="material-symbols-outlined text-[10px]">play_arrow</span>Play
-            </button>
-          ` : ''}
-          ${canRemove ? `
-            <button onclick="removeQueueItem('${item.id}')" class="text-xs bg-error-container/10 border border-error/20 hover:bg-error-container/20 text-error px-2 py-0.5 rounded font-bold transition-all flex items-center gap-0.5 cursor-pointer">
-              <span class="material-symbols-outlined text-[10px]">delete</span>Remove
-            </button>
-          ` : ''}
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-window.playQueueItem = function(itemId) {
-  if (socket) socket.emit('play-next-video', { itemId });
-};
-
-window.removeQueueItem = function(itemId) {
-  if (socket) socket.emit('remove-from-queue', { itemId });
-};
-
-function initQueueControls() {
-  const form = document.getElementById('add-to-queue-form');
-  const clearBtn = document.getElementById('clear-queue-btn');
-  
-  if (form) {
-    form.onsubmit = (e) => {
-      e.preventDefault();
-      const urlInput = document.getElementById('queue-url-input');
-      const videoUrl = urlInput.value.trim();
-      
-      if (videoUrl && socket) {
-        let parsedTitle = "Playlist Video";
-        try {
-          const urlObj = new URL(videoUrl);
-          if (urlObj.hostname.includes('youtube.com') || urlObj.hostname.includes('youtu.be')) {
-            parsedTitle = "YouTube Video";
-            const vidId = urlObj.searchParams.get('v');
-            if (vidId) parsedTitle += ` (${vidId})`;
-          } else if (urlObj.hostname.includes('vimeo.com')) {
-            parsedTitle = "Vimeo Video";
-          } else if (urlObj.hostname.includes('twitch.tv')) {
-            parsedTitle = "Twitch Stream";
-          } else {
-            const basename = urlObj.pathname.split('/').pop();
-            if (basename) parsedTitle = basename;
-          }
-        } catch(e) {}
-
-        socket.emit('add-to-queue', { videoUrl, title: parsedTitle });
-        urlInput.value = '';
-      }
-    };
-  }
-
-  if (clearBtn) {
-    clearBtn.onclick = () => {
-      if (confirm("Clear all items in the playlist queue?")) {
-        socket.emit('clear-queue');
-      }
-    };
-  }
-}
-
-// ==========================================
 // WEBRTC CALL COMPONENT FUNCTIONS
 // ==========================================
 const rtcConfig = {
@@ -987,7 +859,7 @@ function initInviteControl() {
   if (inviteBtn) {
     inviteBtn.onclick = () => {
       const inviteUrl = window.location.href;
-      let textToCopy = `Hey! Join my watch party in Obsidian Nebula: ${inviteUrl}`;
+      let textToCopy = `Hey! Join my watch party in Movie Partner: ${inviteUrl}`;
       if (roomPasscode) {
         textToCopy += ` (Passcode: ${roomPasscode})`;
       }
@@ -1022,7 +894,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   await initSession();
   initEmojiControls();
-  initQueueControls();
   initWebRTCHandlers();
   initInviteControl();
 

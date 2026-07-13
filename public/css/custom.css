@@ -1,44 +1,25 @@
-/* Custom CSS for Obsidian Nebula */
+/* Custom CSS for Movie Partner Watch Party Platform */
 
-/* Glassmorphism card */
+/* Flat clean dark cards & panels */
 .glass-card {
-  background: linear-gradient(135deg, rgba(30, 30, 30, 0.75), rgba(15, 15, 15, 0.85)) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
+  background: #1f1f1f !important;
+  border: 1px solid #2a2a2a !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 .glass-panel {
-  background: linear-gradient(135deg, rgba(20, 20, 19, 0.85), rgba(10, 10, 9, 0.95)) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 8px 32px 0 rgba(0, 0, 0, 0.5) !important;
+  background: #181818 !important;
+  border: 1px solid #2a2a2a !important;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
-/* Ambient glow orbs */
+/* Ambient glow orbs - REMOVED */
 .ambient-orb {
-  position: absolute !important;
-  width: 40vw !important;
-  height: 40vw !important;
-  max-width: 600px !important;
-  max-height: 600px !important;
-  border-radius: 50% !important;
-  filter: blur(120px) !important;
-  opacity: 0.15 !important;
-  pointer-events: none !important;
-  z-index: -10 !important;
-  animation: floatOrb 20s infinite alternate ease-in-out !important;
-}
-
-@keyframes floatOrb {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  100% {
-    transform: translate(10%, 10%) scale(1.1);
-  }
+  display: none !important;
 }
 
 /* Float animation */
@@ -51,22 +32,22 @@
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-15px);
+    transform: translateY(-8px);
   }
 }
 
-/* Neon text & borders */
+/* Neon elements - CLEAN STYLES */
 .neon-border {
-  border-color: rgba(209, 43, 129, 0.4) !important;
-  box-shadow: 0 0 15px rgba(209, 43, 129, 0.2) !important;
+  border-color: #3e3e3e !important;
+  box-shadow: none !important;
 }
 
 .neon-glow {
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3) !important;
+  box-shadow: none !important;
 }
 
 .neon-text-glow {
-  text-shadow: 0 0 10px rgba(209, 43, 129, 0.5) !important;
+  text-shadow: none !important;
 }
 
 /* Hide scrollbar */
@@ -78,18 +59,18 @@
   scrollbar-width: none;
 }
 
-/* Navigation blur */
+/* Navigation */
 .nav-blur {
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
+  background: #181818 !important;
+  border-bottom: 1px solid #2a2a2a !important;
 }
 
 /* Sidebar Responsive Transition Classes */
 aside {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s ease !important;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), width 0.25s ease !important;
 }
 main {
-  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 .sidebar-hidden {
   transform: translateX(-100%);
