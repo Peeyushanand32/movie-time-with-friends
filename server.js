@@ -712,13 +712,16 @@ app.get('/api/drive-check', async (req, res) => {
 
 // API Endpoint to list rooms
 app.get('/api/rooms', (req, res) => {
-  const rooms = db.getRooms().map(room => {
-    const { passcode, ...rest } = room;
-    return {
-      ...rest,
-      isPrivate: !!passcode
-    };
-  });
+  const currentUserId = req.headers['x-user-id'] || req.query.userId;
+  const rooms = db.getRooms()
+    .filter(room => room.hostId === 'system' || room.hostId === currentUserId)
+    .map(room => {
+      const { passcode, ...rest } = room;
+      return {
+        ...rest,
+        isPrivate: !!passcode
+      };
+    });
   res.json(rooms);
 });
 

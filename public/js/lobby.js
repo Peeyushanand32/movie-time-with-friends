@@ -16,7 +16,11 @@ async function initSession() {
 // Fetch Rooms from API
 async function fetchRooms() {
   try {
-    const res = await fetch('/api/rooms');
+    const headers = {};
+    if (userId) {
+      headers['x-user-id'] = userId;
+    }
+    const res = await fetch('/api/rooms', { headers });
     rooms = await res.json();
     renderRooms();
     updateLobbyCount();
